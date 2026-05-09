@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wireshark Demo — Hacker World</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.ws-page {
+   min-height: 100vh;
+   padding: 120px 4% 80px;
+   font-family: monospace;
+}
+
+.ws-page h1 {
+   font-size: 38px;
+   letter-spacing: 4px;
+   text-transform: uppercase;
+   margin-bottom: 8px;
+   font-family: 'Inter', Arial, sans-serif;
+}
+
+.ws-page h1 span { color: #ff1a1a; }
+
+.ws-page .sub {
+   color: #555;
+   font-size: 13px;
+   letter-spacing: 2px;
+   margin-bottom: 30px;
+   font-family: 'Inter', Arial, sans-serif;
+}
+
+/* TOOLBAR */
+.ws-toolbar {
+   background: #1a1a2e;
+   border: 1px solid #333;
+   border-bottom: none;
+   padding: 10px 14px;
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   flex-wrap: wrap;
+   border-radius: 8px 8px 0 0;
+}
+
+.ws-btn {
+   background: #2a2a3e;
+   border: 1px solid #444;
+   color: #ccc;
+   padding: 5px 12px;
+   font-size: 12px;
+   cursor: pointer;
+   border-radius: 4px;
+   font-family: monospace;
+   transition: all .2s;
+}
+
+.ws-btn:hover { background: #ff1a1a; color: #fff; border-color: #ff1a1a; }
+.ws-btn.active { background: #ff1a1a; color: #fff; border-color: #ff1a1a; }
+
+.ws-filter-bar {
+   background: #111;
+   border: 1px solid #333;
+   border-bottom: none;
+   padding: 8px 14px;
+   display: flex;
+   align-items: center;
+   gap: 10px;
+}
+
+.ws-filter-bar label {
+   color: #555;
+   font-size: 12px;
+   white-space: nowrap;
+}
+
+.ws-filter-input {
+   flex: 1;
+   background: #0a0a0a;
+   border: 1px solid #333;
+   color: #00ff88;
+   padding: 5px 10px;
+   font-family: monospace;
+   font-size: 13px;
+   outline: none;
+   border-radius: 3px;
+}
+
+.ws-filter-input:focus { border-color: #ff1a1a; }
+
+.ws-apply-btn {
+   background: #1a3a1a;
+   border: 1px solid #00aa44;
+   color: #00ff88;
+   padding: 5px 14px;
+   font-size: 12px;
+   cursor: pointer;
+   border-radius: 3px;
+   font-family: monospace;
+}
+
+.ws-apply-btn:hover { background: #00aa44; color: #fff; }
+
+/* PACKET TABLE */
+.ws-packet-table {
+   width: 100%;
+   border-collapse: collapse;
+   background: #080808;
+   border: 1px solid #333;
+   font-size: 12px;
+}
+
+.ws-packet-table thead th {
+   background: #1a1a1a;
+   color: #888;
+   padding: 7px 10px;
+   text-align: left;
+   border-bottom: 1px solid #333;
+   border-right: 1px solid #222;
+   font-size: 11px;
+   letter-spacing: 1px;
+   text-transform: uppercase;
+   cursor: pointer;
+   user-select: none;
+}
+
+.ws-packet-table thead th:hover { background: #222; color: #fff; }
+
+.ws-packet-table tbody tr {
+   cursor: pointer;
+   border-bottom: 1px solid #111;
+   transition: background .1s;
+}
+
+.ws-packet-table tbody tr:hover { filter: brightness(1.4); }
+.ws-packet-table tbody tr.selected { filter: brightness(1.8) !important; outline: 1px solid #fff3; }
+
+.ws-packet-table td {
+   padding: 5px 10px;
+   border-right: 1px solid #111;
+   white-space: nowrap;
+   overflow: hidden;
+   max-width: 200px;
+   text-overflow: ellipsis;
+}
+
+/* Protocol colors — just like real Wireshark */
+.proto-http  { background: #003300; color: #00ff88; }
+.proto-dns   { background: #001a33; color: #66aaff; }
+.proto-tcp   { background: #0a0a1a; color: #aaaaff; }
+.proto-udp   { background: #1a0a00; color: #ffaa44; }
+.proto-arp   { background: #1a1a00; color: #ffff44; }
+.proto-icmp  { background: #1a0000; color: #ff6666; }
+.proto-tls   { background: #001a1a; color: #44ffff; }
+.proto-ftp   { background: #1a001a; color: #ff88ff; }
+
+.packet-list-wrap {
+   max-height: 280px;
+   overflow-y: auto;
+   border: 1px solid #333;
+   border-top: none;
+}
+
+.packet-list-wrap::-webkit-scrollbar { width: 4px; }
+.packet-list-wrap::-webkit-scrollbar-thumb { background: #ff1a1a; }
+
+/* DETAIL PANELS */
+.ws-panels {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 0;
+   border: 1px solid #333;
+   border-top: none;
+}
+
+.ws-detail {
+   background: #050505;
+   border-right: 1px solid #222;
+   padding: 12px;
+   min-height: 180px;
+   max-height: 180px;
+   overflow-y: auto;
+}
+
+.ws-detail::-webkit-scrollbar { width: 3px; }
+.ws-detail::-webkit-scrollbar-thumb { background: #333; }
+
+.ws-detail h4 {
+   color: #555;
+   font-size: 10px;
+   letter-spacing: 2px;
+   text-transform: uppercase;
+   margin-bottom: 10px;
+   border-bottom: 1px solid #1a1a1a;
+   padding-bottom: 6px;
+}
+
+.detail-tree { list-style: none; }
+.detail-tree li {
+   color: #aaa;
+   font-size: 11px;
+   line-height: 1.9;
+   padding-left: 10px;
+   border-left: 2px solid #1a1a1a;
+   margin-bottom: 2px;
+}
+
+.detail-tree li span { color: #00ff88; }
+.detail-tree li.section {
+   color: #ff1a1a;
+   font-weight: bold;
+   border-left: 2px solid #ff1a1a;
+   padding-left: 8px;
+   margin-top: 6px;
+}
+
+.ws-hex {
+   background: #050505;
+   padding: 12px;
+   min-height: 180px;
+   max-height: 180px;
+   overflow-y: auto;
+   font-size: 11px;
+   line-height: 1.8;
+   color: #444;
+}
+
+.ws-hex::-webkit-scrollbar { width: 3px; }
+.ws-hex .hex-offset { color: #333; margin-right: 8px; }
+.ws-hex .hex-bytes { color: #00aa55; margin-right: 12px; letter-spacing: 2px; }
+.ws-hex .hex-ascii { color: #555; }
+
+/* STATUS BAR */
+.ws-status {
+   background: #0a0a0a;
+   border: 1px solid #333;
+   border-top: none;
+   padding: 5px 14px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   font-size: 11px;
+   color: #555;
+   border-radius: 0 0 8px 8px;
+}
+
+.ws-status .live { color: #00ff88; }
+.ws-status .live::before {
+   content: '● ';
+   animation: blink2 1s infinite;
+}
+
+@keyframes blink2 {
+   0%, 100% { opacity: 1; }
+   50% { opacity: 0; }
+}
+
+/* INFO SECTION */
+.ws-info-grid {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+   gap: 16px;
+   margin-top: 40px;
+}
+
+.ws-info-card {
+   background: #0b0b0b;
+   border: 1px solid rgba(255,0,0,.15);
+   padding: 20px;
+   border-radius: 8px;
+}
+
+.ws-info-card h3 {
+   color: #ff1a1a;
+   font-size: 13px;
+   letter-spacing: 2px;
+   text-transform: uppercase;
+   margin-bottom: 10px;
+   font-family: 'Inter', Arial, sans-serif;
+}
+
+.ws-info-card p {
+   color: #777;
+   font-size: 13px;
+   line-height: 1.8;
+   font-family: 'Inter', Arial, sans-serif;
+}
+
+@media (max-width: 600px) {
+   .ws-panels { grid-template-columns: 1fr; }
+   .ws-page { padding: 100px 3% 60px; }
+   .ws-page h1 { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<div id="navbar"></div>
+
+<section class="ws-page">
+
+   <h1>WIRESHARK <span>DEMO</span></h1>
+   <p class="sub">// Simulated Network Packet Analyzer — Educational Mode</p>
+
+   <!-- TOOLBAR -->
+   <div class="ws-toolbar">
+      <button class="ws-btn active" id="btnCapture" onclick="toggleCapture()">▶ Start Capture</button>
+      <button class="ws-btn" onclick="clearPackets()">■ Stop &amp; Clear</button>
+      <button class="ws-btn" onclick="filterProto('all')">All</button>
+      <button class="ws-btn" onclick="filterProto('HTTP')">HTTP</button>
+      <button class="ws-btn" onclick="filterProto('DNS')">DNS</button>
+      <button class="ws-btn" onclick="filterProto('TCP')">TCP</button>
+      <button class="ws-btn" onclick="filterProto('TLS')">TLS</button>
+      <button class="ws-btn" onclick="filterProto('ARP')">ARP</button>
+      <button class="ws-btn" onclick="filterProto('ICMP')">ICMP</button>
+      <span style="color:#555; font-size:11px; margin-left:auto;">Simulated — Educational Only</span>
+   </div>
+
+   <!-- FILTER BAR -->
+   <div class="ws-filter-bar">
+      <label>Filter:</label>
+      <input class="ws-filter-input" id="filterInput" type="text" placeholder='ip.addr == 192.168.1.1  or  http  or  dns' />
+      <button class="ws-apply-btn" onclick="applyFilter()">Apply</button>
+      <button class="ws-apply-btn" style="background:#1a0000;border-color:#aa0000;color:#ff4444" onclick="clearFilter()">Clear</button>
+   </div>
+
+   <!-- PACKET TABLE -->
+   <div class="packet-list-wrap" id="packetListWrap">
+      <table class="ws-packet-table">
+         <thead>
+            <tr>
+               <th style="width:50px">#</th>
+               <th style="width:80px">Time</th>
+               <th style="width:130px">Source</th>
+               <th style="width:130px">Destination</th>
+               <th style="width:70px">Protocol</th>
+               <th style="width:60px">Length</th>
+               <th>Info</th>
+            </tr>
+         </thead>
+         <tbody id="packetBody"></tbody>
+      </table>
+   </div>
+
+   <!-- DETAIL PANELS -->
+   <div class="ws-panels">
+      <div class="ws-detail" id="detailPanel">
+         <h4>Packet Details</h4>
+         <p style="color:#333; font-size:12px;">← Packet select karo upar se</p>
+      </div>
+      <div class="ws-hex" id="hexPanel">
+         <div style="color:#333; font-size:12px;">Hex dump yahan dikhega...</div>
+      </div>
+   </div>
+
+   <!-- STATUS BAR -->
+   <div class="ws-status">
+      <span class="live" id="statusText">Capturing on eth0...</span>
+      <span id="packetCount">Packets: 0</span>
+      <span id="elapsed">Elapsed: 0:00</span>
+      <span>eth0 — 10.10.10.2</span>
+   </div>
+
+   <!-- LEARN SECTION -->
+   <div class="ws-info-grid">
+
+      <div class="ws-info-card">
+         <h3>HTTP</h3>
+         <p>HyperText Transfer Protocol — websites ka data transfer hota hai. GET, POST requests yahan dikhti hain. Unencrypted hoti hain — sensitive data clearly visible hota hai.</p>
+      </div>
+
+      <div class="ws-info-card">
+         <h3>DNS</h3>
+         <p>Domain Name System — jab browser kisi website ka naam resolve karta hai IP mein. DNS queries unencrypted hoti hain — koi bhi dekh sakta hai tum kahan ja rahe ho.</p>
+      </div>
+
+      <div class="ws-info-card">
+         <h3>TLS/HTTPS</h3>
+         <p>Encrypted traffic — HTTPS websites ka data TLS se protect hota hai. Wireshark mein dikhta hai lekin decrypt nahi hota bina private key ke.</p>
+      </div>
+
+      <div class="ws-info-card">
+         <h3>ARP</h3>
+         <p>Address Resolution Protocol — IP address se MAC address dhundta hai local network mein. ARP Spoofing attack isi protocol ko target karta hai.</p>
+      </div>
+
+      <div class="ws-info-card">
+         <h3>TCP</h3>
+         <p>Transmission Control Protocol — reliable data delivery ensure karta hai. SYN, SYN-ACK, ACK — teen-way handshake se connection establish hota hai.</p>
+      </div>
+
+      <div class="ws-info-card">
+         <h3>ICMP</h3>
+         <p>Internet Control Message Protocol — ping command isi se kaam karta hai. Network troubleshooting ke liye use hota hai. ICMP flood se DDoS attack bhi hota hai.</p>
+      </div>
+
+   </div>
+
+</section>
+
+<div id="footer"></div>
+<script src="assets/js/script.js"></script>
+
+<script>
+const packetTemplates = [
+   { proto:'HTTP',  src:'192.168.1.5',   dst:'93.184.216.34',  len:245, info:'GET /index.html HTTP/1.1' },
+   { proto:'DNS',   src:'192.168.1.5',   dst:'8.8.8.8',        len:74,  info:'Standard query A google.com' },
+   { proto:'TCP',   src:'192.168.1.5',   dst:'142.250.77.14',  len:60,  info:'SYN Seq=0 Win=64240 Len=0' },
+   { proto:'TLS',   src:'192.168.1.5',   dst:'142.250.77.14',  len:517, info:'Client Hello TLSv1.3' },
+   { proto:'HTTP',  src:'93.184.216.34', dst:'192.168.1.5',    len:892, info:'HTTP/1.1 200 OK (text/html)' },
+   { proto:'DNS',   src:'8.8.8.8',       dst:'192.168.1.5',    len:90,  info:'Standard query response A 142.250.77.14' },
+   { proto:'ARP',   src:'192.168.1.1',   dst:'FF:FF:FF:FF:FF', len:42,  info:'Who has 192.168.1.5? Tell 192.168.1.1' },
+   { proto:'TCP',   src:'142.250.77.14', dst:'192.168.1.5',    len:60,  info:'SYN-ACK Seq=0 Ack=1 Win=65535' },
+   { proto:'ICMP',  src:'192.168.1.5',   dst:'8.8.8.8',        len:74,  info:'Echo (ping) request id=0x0001' },
+   { proto:'ICMP',  src:'8.8.8.8',       dst:'192.168.1.5',    len:74,  info:'Echo (ping) reply id=0x0001 ttl=57' },
+   { proto:'TLS',   src:'142.250.77.14', dst:'192.168.1.5',    len:743, info:'Server Hello, Certificate, Server Hello Done' },
+   { proto:'HTTP',  src:'192.168.1.5',   dst:'93.184.216.34',  len:312, info:'POST /login HTTP/1.1 (application/x-www-form-urlencoded)' },
+   { proto:'DNS',   src:'192.168.1.5',   dst:'8.8.8.8',        len:68,  info:'Standard query A youtube.com' },
+   { proto:'UDP',   src:'192.168.1.5',   dst:'239.255.255.250',len:175, info:'SSDP M-SEARCH * HTTP/1.1' },
+   { proto:'ARP',   src:'192.168.1.5',   dst:'FF:FF:FF:FF:FF', len:42,  info:'Who has 192.168.1.1? Tell 192.168.1.5' },
+   { proto:'FTP',   src:'192.168.1.5',   dst:'10.10.10.99',    len:88,  info:'Request: USER admin' },
+   { proto:'FTP',   src:'10.10.10.99',   dst:'192.168.1.5',    len:64,  info:'Response: 331 Password required' },
+   { proto:'TCP',   src:'192.168.1.5',   dst:'10.10.10.99',    len:54,  info:'ACK Seq=100 Ack=200 Win=502' },
+];
+
+const details = {
+   HTTP:  (p) => [
+      {s:true,  v:'Frame — Ethernet II'},
+      {s:false, v:'Destination MAC: 00:1A:2B:3C:4D:5E'},
+      {s:false, v:'Source MAC: AA:BB:CC:DD:EE:FF'},
+      {s:true,  v:'Internet Protocol Version 4'},
+      {s:false, v:`Source IP: ${p.src}`},
+      {s:false, v:`Destination IP: ${p.dst}`},
+      {s:false, v:'TTL: 64   Protocol: TCP (6)'},
+      {s:true,  v:'Transmission Control Protocol'},
+      {s:false, v:'Source Port: 54321   Dest Port: 80'},
+      {s:false, v:'Sequence: 1   Ack: 1   Flags: PSH ACK'},
+      {s:true,  v:'Hypertext Transfer Protocol'},
+      {s:false, v:`Request: ${p.info}`},
+      {s:false, v:'Host: ' + p.dst},
+      {s:false, v:'User-Agent: Mozilla/5.0'},
+      {s:false, v:'Accept: text/html,application/xhtml+xml'},
+   ],
+   DNS:   (p) => [
+      {s:true,  v:'Frame — Ethernet II'},
+      {s:true,  v:'Internet Protocol Version 4'},
+      {s:false, v:`Source: ${p.src}   Dest: ${p.dst}`},
+      {s:true,  v:'User Datagram Protocol'},
+      {s:false, v:'Source Port: 52341   Dest Port: 53'},
+      {s:true,  v:'Domain Name System (query)'},
+      {s:false, v:'Transaction ID: 0xabcd'},
+      {s:false, v:'Flags: 0x0100 Standard query'},
+      {s:false, v:'Questions: 1   Answer RRs: 0'},
+      {s:false, v:'Query: google.com  Type: A  Class: IN'},
+   ],
+   TCP:   (p) => [
+      {s:true,  v:'Frame — Ethernet II'},
+      {s:true,  v:'Internet Protocol Version 4'},
+      {s:false, v:`Source: ${p.src}   TTL: 64`},
+      {s:false, v:`Destination: ${p.dst}`},
+      {s:true,  v:'Transmission Control Protocol'},
+      {s:false, v:'Source Port: 54432   Dest Port: 443'},
+      {s:false, v:'Sequence Number: 0 (relative)'},
+      {s:false, v:'Header Length: 40 bytes'},
+      {s:false, v:'Flags: 0x002 (SYN)'},
+      {s:false, v:'Window Size: 64240'},
+      {s:false, v:'Checksum: 0x1f2a [correct]'},
+   ],
+   TLS:   (p) => [
+      {s:true,  v:'Frame — Ethernet II'},
+      {s:true,  v:'Internet Protocol Version 4'},
+      {s:false, v:`Source: ${p.src}   Dest: ${p.dst}`},
+      {s:true,  v:'Transport Layer Security'},
+      {s:false, v:'Content Type: Handshake (22)'},
+      {s:false, v:'Version: TLS 1.0 (0x0301)'},
+      {s:false, v:'Length: 463'},
+      {s:true,  v:'Handshake Protocol: Client Hello'},
+      {s:false, v:'Version: TLS 1.3 (0x0304)'},
+      {s:false, v:'Cipher Suites: 17 suites'},
+      {s:false, v:'⚠ Encrypted — content not visible'},
+   ],
+   ARP:   (p) => [
+      {s:true,  v:'Frame — Ethernet II'},
+      {s:false, v:'Destination: Broadcast ff:ff:ff:ff:ff:ff'},
+      {s:false, v:'Source: aa:bb:cc:dd:ee:ff'},
+      {s:true,  v:'Address Resolution Protocol'},
+      {s:false, v:'Hardware Type: Ethernet (1)'},
+      {s:false, v:'Protocol Type: IPv4 (0x0800)'},
+      {s:false, v:'Opcode: request (1)'},
+      {s:false, v:`Sender IP: ${p.src}`},
+      {s:false, v:`Target IP: ${p.dst}`},
+      {s:false, v:'⚠ ARP Spoofing attack isi par hota hai!'},
+   ],
+   ICMP:  (p) => [
+      {s:true,  v:'Frame — Ethernet II'},
+      {s:true,  v:'Internet Protocol Version 4'},
+      {s:false, v:`Source: ${p.src}   Dest: ${p.dst}`},
+      {s:false, v:'Protocol: ICMP (1)   TTL: 64'},
+      {s:true,  v:'Internet Control Message Protocol'},
+      {s:false, v:'Type: 8 (Echo Request)'},
+      {s:false, v:'Code: 0'},
+      {s:false, v:'Checksum: 0x4d55 [correct]'},
+      {s:false, v:'Identifier: 0x0001   Seq: 1'},
+      {s:false, v:'Data: 32 bytes'},
+   ],
+   UDP:   (p) => [
+      {s:true,  v:'Frame — Ethernet II'},
+      {s:true,  v:'Internet Protocol Version 4'},
+      {s:false, v:`Source: ${p.src}   Dest: ${p.dst}`},
+      {s:true,  v:'User Datagram Protocol'},
+      {s:false, v:'Source Port: 1900   Dest Port: 1900'},
+      {s:false, v:'Length: 175   Checksum: 0x0000'},
+      {s:true,  v:'Simple Service Discovery Protocol'},
+      {s:false, v:'M-SEARCH * HTTP/1.1'},
+   ],
+   FTP:   (p) => [
+      {s:true,  v:'Frame — Ethernet II'},
+      {s:true,  v:'Internet Protocol Version 4'},
+      {s:false, v:`Source: ${p.src}   Dest: ${p.dst}`},
+      {s:true,  v:'File Transfer Protocol (FTP)'},
+      {s:false, v:`Request command: ${p.info}`},
+      {s:false, v:'⚠ FTP unencrypted hai — password visible!'},
+      {s:false, v:'Use SFTP ya FTPS instead of FTP'},
+   ],
+};
+
+function hexDump(proto) {
+   const lines = [
+      ['0000', '45 00 00 f5 12 34 40 00  40 06 00 00 c0 a8 01 05', 'E..5.4@.@.......'],
+      ['0010', '5d b8 d8 22 d4 31 00 50  a3 4b 00 00 00 00 70 02', '].".1.P.K....p.'],
+      ['0020', 'fa f0 de ad 00 00 02 04  05 b4 01 03 03 07 01 01', '................'],
+      ['0030', '08 0a 00 00 00 00 00 00  00 00 47 45 54 20 2f 20', '..........GET / '],
+      ['0040', '48 54 54 50 2f 31 2e 31  0d 0a 48 6f 73 74 3a 20', 'HTTP/1.1..Host: '],
+      ['0050', '67 6f 6f 67 6c 65 2e 63  6f 6d 0d 0a 0d 0a 00 00', 'google.com......'],
+   ];
+   return lines;
+}
+
+let packets = [];
+let capturing = false;
+let captureTimer = null;
+let startTime = null;
+let elapsedTimer = null;
+let filterProtoVal = 'all';
+let selectedRow = null;
+
+function protoClass(p) {
+   return 'proto-' + p.toLowerCase();
+}
+
+function renderPackets() {
+   const body = document.getElementById('packetBody');
+   body.innerHTML = '';
+   const filter = document.getElementById('filterInput').value.trim().toLowerCase();
+
+   packets.forEach((p, i) => {
+      if (filterProtoVal !== 'all' && p.proto !== filterProtoVal) return;
+      if (filter && !p.proto.toLowerCase().includes(filter) &&
+          !p.src.includes(filter) && !p.dst.includes(filter) &&
+          !p.info.toLowerCase().includes(filter)) return;
+
+      const tr = document.createElement('tr');
+      tr.className = protoClass(p.proto);
+      tr.dataset.idx = i;
+      tr.innerHTML = `
+         <td>${p.num}</td>
+         <td>${p.time}</td>
+         <td>${p.src}</td>
+         <td>${p.dst}</td>
+         <td><b>${p.proto}</b></td>
+         <td>${p.len}</td>
+         <td>${p.info}</td>
+      `;
+      tr.addEventListener('click', () => selectPacket(tr, p));
+      body.appendChild(tr);
+   });
+
+   document.getElementById('packetCount').textContent = 'Packets: ' + packets.length;
+   const wrap = document.getElementById('packetListWrap');
+   wrap.scrollTop = wrap.scrollHeight;
+}
+
+function selectPacket(tr, p) {
+   if (selectedRow) selectedRow.classList.remove('selected');
+   tr.classList.add('selected');
+   selectedRow = tr;
+
+   const detail = document.getElementById('detailPanel');
+   const hex = document.getElementById('hexPanel');
+
+   const fn = details[p.proto] || details['TCP'];
+   const items = fn(p);
+   detail.innerHTML = '<h4>Packet Details — ' + p.proto + '</h4><ul class="detail-tree">' +
+      items.map(it => `<li class="${it.s ? 'section' : ''}">${it.s ? '▼ ' : '  '}${it.v}</li>`).join('') +
+      '</ul>';
+
+   const lines = hexDump(p.proto);
+   hex.innerHTML = '<h4 style="color:#555;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;border-bottom:1px solid #1a1a1a;padding-bottom:6px;">Hex Dump</h4>' +
+      lines.map(l =>
+         `<div><span class="hex-offset">${l[0]}</span><span class="hex-bytes">${l[1]}</span><span class="hex-ascii">${l[2]}</span></div>`
+      ).join('');
+}
+
+function addPacket() {
+   const t = packetTemplates[Math.floor(Math.random() * packetTemplates.length)];
+   const now = ((Date.now() - startTime) / 1000).toFixed(3);
+   packets.push({
+      num: packets.length + 1,
+      time: now,
+      src: t.src,
+      dst: t.dst,
+      proto: t.proto,
+      len: t.len + Math.floor(Math.random() * 20),
+      info: t.info,
+   });
+   renderPackets();
+}
+
+function toggleCapture() {
+   const btn = document.getElementById('btnCapture');
+   if (!capturing) {
+      capturing = true;
+      startTime = Date.now();
+      btn.textContent = '⏸ Capturing...';
+      btn.classList.add('active');
+      document.getElementById('statusText').textContent = 'Capturing on eth0...';
+      captureTimer = setInterval(addPacket, 600 + Math.random() * 400);
+      elapsedTimer = setInterval(() => {
+         const s = Math.floor((Date.now() - startTime) / 1000);
+         const m = Math.floor(s / 60);
+         document.getElementById('elapsed').textContent = `Elapsed: ${m}:${String(s % 60).padStart(2,'0')}`;
+      }, 1000);
+   } else {
+      capturing = false;
+      clearInterval(captureTimer);
+      clearInterval(elapsedTimer);
+      btn.textContent = '▶ Start Capture';
+      btn.classList.remove('active');
+      document.getElementById('statusText').textContent = 'Capture stopped.';
+   }
+}
+
+function clearPackets() {
+   capturing = false;
+   clearInterval(captureTimer);
+   clearInterval(elapsedTimer);
+   packets = [];
+   selectedRow = null;
+   document.getElementById('packetBody').innerHTML = '';
+   document.getElementById('detailPanel').innerHTML = '<h4>Packet Details</h4><p style="color:#333;font-size:12px;">← Packet select karo upar se</p>';
+   document.getElementById('hexPanel').innerHTML = '<div style="color:#333;font-size:12px;">Hex dump yahan dikhega...</div>';
+   document.getElementById('btnCapture').textContent = '▶ Start Capture';
+   document.getElementById('btnCapture').classList.remove('active');
+   document.getElementById('statusText').textContent = 'Ready.';
+   document.getElementById('packetCount').textContent = 'Packets: 0';
+   document.getElementById('elapsed').textContent = 'Elapsed: 0:00';
+}
+
+function filterProto(p) {
+   filterProtoVal = p;
+   renderPackets();
+}
+
+function applyFilter() { renderPackets(); }
+function clearFilter() {
+   document.getElementById('filterInput').value = '';
+   renderPackets();
+}
+
+// Auto start on load
+window.addEventListener('load', () => {
+   setTimeout(toggleCapture, 800);
+});
+</script>
+
+</body>
+</html>
