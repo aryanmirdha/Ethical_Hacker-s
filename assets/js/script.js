@@ -86,3 +86,135 @@ typeEffect();
 }
 
 });
+
+/* =========================
+   SPIDER MOVEMENT
+   - Spider screen par move karta hai
+   - Jab screen ke bahar jaata hai toh gayab hota hai
+   - Phir doosri random jagah se wapas aata hai
+========================= */
+
+const spiders = document.querySelectorAll(".spider");
+
+function animateSpider(spider) {
+
+   const W = window.innerWidth;
+   const H = window.innerHeight;
+   const size = 40;
+
+   // Current position
+   let x = parseFloat(spider.dataset.x) || Math.random() * W;
+   let y = parseFloat(spider.dataset.y) || Math.random() * H;
+
+   // Random target — screen ke BAHAR bhi ja sakta hai
+   const targets = [
+      // Screen ke andar
+      { tx: Math.random() * W, ty: Math.random() * H },
+      // Left se bahar
+      { tx: -size - 20, ty: Math.random() * H },
+      // Right se bahar
+      { tx: W + size + 20, ty: Math.random() * H },
+      // Upar se bahar
+      { tx: Math.random() * W, ty: -size - 20 },
+      // Neeche se bahar
+      { tx: Math.random() * W, ty: H + size + 20 },
+   ];
+
+   // 40% chance bahar jaaye, 60% andar rahe
+   const pick = Math.random();
+   let chosen;
+   if (pick < 0.6) {
+      chosen = targets[0]; // screen ke andar
+   } else {
+      chosen = targets[Math.floor(Math.random() * 4) + 1]; // bahar
+   }
+
+   const tx = chosen.tx;
+   const ty = chosen.ty;
+
+   // Distance calculate karo
+   const dist = Math.sqrt((tx - x) ** 2 + (ty - y) ** 2);
+   const speed = 120; // pixels per second
+   const duration = Math.max(1500, (dist / speed) * 1000);
+
+   // Transition set karo
+   spider.style.transition = `left ${duration}ms linear, top ${duration}ms linear`;
+   spider.style.left = tx + "px";
+   spider.style.top  = ty + "px";
+
+   spider.dataset.x = tx;
+   spider.dataset.y = ty;
+
+   setTimeout(() => {
+
+      // Agar bahar gaya toh — gayab karo, doosri side se wapas laao
+      const outLeft  = tx < -size;
+      const outRight = tx > W + size;
+      const outTop   = ty < -size;
+      const outBot   = ty > H + size;
+
+      if (outLeft || outRight || outTop || outBot) {
+
+         // Transition band karo taaki teleport ho sake
+         spider.style.transition = "none";
+
+         // Opposite side se wapas aao
+         let newX, newY;
+
+         if (outLeft) {
+            newX = W + size;
+            newY = Math.random() * H;
+         } else if (outRight) {
+            newX = -size;
+            newY = Math.random() * H;
+         } else if (outTop) {
+            newX = Math.random() * W;
+            newY = H + size;
+         } else {
+            newX = Math.random() * W;
+            newY = -size;
+         }
+
+         spider.style.left = newX + "px";
+         spider.style.top  = newY + "px";
+         spider.dataset.x  = newX;
+         spider.dataset.y  = newY;
+
+         // Thodi der ruko phir dobara move karo
+         setTimeout(() => animateSpider(spider), 300);
+
+      } else {
+
+         // Andar hai toh seedha next move
+         const pause = 500 + Math.random() * 1000;
+         setTimeout(() => animateSpider(spider), pause);
+
+      }
+
+   }, duration + 50);
+
+}
+
+window.addEventListener("load", () => {
+
+   spiders.forEach((spider, i) => {
+
+      const W = window.innerWidth;
+      const H = window.innerHeight;
+
+      // Har spider alag jagah se shuru ho
+      const startX = Math.random() * W;
+      const startY = Math.random() * H;
+
+      spider.style.transition = "none";
+      spider.style.left = startX + "px";
+      spider.style.top  = startY + "px";
+      spider.dataset.x  = startX;
+      spider.dataset.y  = startY;
+
+      // Alag alag time pe shuru ho taaki sab ek saath na chale
+      setTimeout(() => animateSpider(spider), i * 600);
+
+   });
+
+});
