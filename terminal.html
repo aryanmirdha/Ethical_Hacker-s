@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kali Linux Terminal — HackerWorld Advanced</title>
+<style>
+/* ═══════════════════════════════════════════
+   GLOBAL RESET & THEME
+   ═══════════════════════════════════════════ */
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+}
+body {
+   background: #0c0c0c;
+   font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   min-height: 100vh;
+   overflow: hidden;
+   background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(0,255,136,0.03) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(255,26,26,0.02) 0%, transparent 50%);
+}
+
+.term-wrapper {
+   width: 100%;
+   height: 100vh;
+   max-width: 1600px;
+   margin: 0 auto;
+   display: flex;
+   flex-direction: column;
+   overflow: hidden;
+   background: #0d0d0d;
+   box-shadow: 0 0 60px rgba(0,255,136,0.05);
+   border: 1px solid rgba(0,255,136,0.08);
+   position: relative;
+}
+
+/* ═══════════════════════ TITLE BAR ═══════════ */
+.title-bar {
+   background: #1a1a1a;
+   padding: 10px 18px;
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   border-bottom: 1px solid #2a2a2a;
+   flex-shrink: 0;
+   user-select: none;
+}
+.title-dots { display: flex; gap: 8px; }
+.title-dot {
+   width: 13px;
+   height: 13px;
+   border-radius: 50%;
+   transition: filter 0.2s;
+}
+.title-dot:hover { filter: brightness(1.4); }
+.title-dot.red    { background: #ff5f56; }
+.title-dot.yellow { background: #ffbd2e; }
+.title-dot.green  { background: #27c93f; }
+.title-text {
+   color: #666;
+   font-size: 13px;
+   font-family: 'Segoe UI', system-ui, sans-serif;
+   margin-left: 12px;
+   letter-spacing: 0.3px;
+}
+.title-text span { color: #00ff88; }
+.title-badge {
+   margin-left: auto;
+   background: rgba(0,255,136,0.08);
+   border: 1px solid rgba(0,255,136,0.15);
+   color: #00ff88;
+   font-size: 10px;
+   padding: 3px 10px;
+   border-radius: 4px;
+   letter-spacing: 1px;
+   font-family: monospace;
+}
+
+/* ═══════════════════ TERMINAL OUTPUT ═══════════ */
+.term-body {
+   flex: 1;
+   padding: 18px 22px;
+   overflow-y: auto;
+   background: #0d0d0d;
+   font-size: 14px;
+   line-height: 1.7;
+   color: #c0c0c0;
+   scroll-behavior: smooth;
+}
+.term-body::-webkit-scrollbar { width: 6px; }
+.term-body::-webkit-scrollbar-track { background: #0d0d0d; }
+.term-body::-webkit-scrollbar-thumb {
+   background: #2a2a2a;
+   border-radius: 3px;
+}
+.term-body::-webkit-scrollbar-thumb:hover { background: #3a3a3a; }
+
+/* ═══════════════════ LINE TYPES ═══════════════ */
+.line                    { white-space: pre-wrap; word-break: break-all; min-height: 1.2em; }
+.line.success, .line.suc{ color: #00ff88; }    /* ← FIXED: both classes now work */
+.line.error              { color: #ff4444; font-weight: 500; }
+.line.info               { color: #00bbff; }
+.line.warning            { color: #ffaa00; }
+.line.dim                { color: #555; }
+.line.prompt-line        { color: #00ff88; }
+.line.separator          { color: #2a2a2a; margin: 2px 0; }
+.line.banner             { color: #00ff88; line-height: 1.2; font-size: 12px; }
+
+/* ═══════════════════ INPUT BAR ═══════════════ */
+.input-bar {
+   display: flex;
+   align-items: center;
+   padding: 10px 22px 14px;
+   background: #0d0d0d;
+   border-top: 1px solid #1a1a1a;
+   flex-shrink: 0;
+}
+.prompt-symbol {
+   color: #00ff88;
+   font-size: 14px;
+   white-space: nowrap;
+   user-select: none;
+   font-weight: 500;
+}
+.prompt-symbol .host { color: #ff1a1a; }
+.prompt-symbol .path { color: #00bbff; }
+.prompt-symbol .dollar { color: #00ff88; }
+#cmd-input {
+   background: transparent;
+   border: none;
+   outline: none;
+   color: #e0e0e0;
+   font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+   font-size: 14px;
+   flex: 1;
+   margin-left: 8px;
+   caret-color: #00ff88;
+}
+
+/* ═══════════════════ STATUS BAR ═══════════════ */
+.status-bar {
+   background: #111;
+   border-top: 1px solid #1a1a1a;
+   padding: 5px 18px;
+   display: flex;
+   justify-content: space-between;
+   font-size: 11px;
+   color: #444;
+   font-family: 'Segoe UI', system-ui, sans-serif;
+   flex-shrink: 0;
+}
+.status-bar .right { color: #333; }
+
+/* ═══════════════════ RESPONSIVE ═══════════════ */
+@media (max-width: 768px) {
+   .term-body { padding: 12px 14px; font-size: 13px; }
+   .input-bar { padding: 8px 14px 12px; }
+   .title-text { font-size: 11px; }
+   .line.banner { font-size: 9px; }
+}
+</style>
+</head>
+<body>
+
+<div class="term-wrapper">
+   <div class="title-bar">
+      <div class="title-dots">
+         <div class="title-dot red"></div>
+         <div class="title-dot yellow"></div>
+         <div class="title-dot green"></div>
+      </div>
+      <div class="title-text">root@<span>kali</span> — HackerWorld Terminal v3.0</div>
+      <div class="title-badge">PRACTICE MODE</div>
+   </div>
+
+   <div class="term-body" id="output"></div>
+
+   <div class="input-bar">
+      <span class="prompt-symbol">
+         <span class="host">root</span>@<span class="path">kali</span>:<span class="path">~</span><span class="dollar">#</span>
+      </span>
+      <input id="cmd-input" type="text" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off" />
+   </div>
+
+   <div class="status-bar">
+      <span>CTRL+L → clear &nbsp;|&nbsp; TAB → autocomplete &nbsp;|&nbsp; ↑↓ → history</span>
+      <span class="right">type <strong style="color:#00ff88;">help</strong> for commands</span>
+   </div>
+</div>
+
+<script>
+/* ═════════════════════════════════════════════════════════
+   KALI LINUX TERMINAL — FIXED VERSION
+   ═════════════════════════════════════════════════════════ */
+
+const BANNER = `
+ ██╗  ██╗ █████╗ ██╗     ██╗
+ ██║ ██╔╝██╔══██╗██║     ██║
+ █████╔╝ ███████║██║     ██║
+ ██╔═██╗ ██╔══██║██║     ██║
+ ██║  ██╗██║  ██║███████╗██║
+ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝
+`;
+
+const HOSTNAME = 'kali';
+const USERNAME = 'root';
+const HOME_DIR = '/root';
+
+const outputEl   = document.getElementById('output');
+const inputEl    = document.getElementById('cmd-input');
+const cmdHistory = [];
+let historyIdx   = -1;
+let currentDir   = '/root';
+
+/* ═══════════════════ CORE HELPERS ═══════════════ */
+function addLine(text, type = '') {
+   const d = document.createElement('div');
+   d.className = 'line' + (type ? ' ' + type : '');
+   d.textContent = text;
+   outputEl.appendChild(d);
+   outputEl.scrollTop = outputEl.scrollHeight;
+}
+
+function addPrompt(cmd) {
+   const dir = currentDir === HOME_DIR ? '~' : currentDir;
+   const prompt = `${USERNAME}@${HOSTNAME}:${dir}# ${cmd}`;
+   addLine(prompt, 'prompt-line');
+}
+
+/* ═══════════════════ COMMAND ENGINE ═══════════════ */
+const commands = {};
+
+commands.help = function() {
+   return [
+      {t:'info',  v:'╔══════════════════════════════════════════════════╗'},
+      {t:'info',  v:'║        Kali Terminal — Available Commands       ║'},
+      {t:'info',  v:'╚══════════════════════════════════════════════════╝'},
+      {t:'dim',   v:''},
+      {t:'dim',   v:'  ■ SYSTEM'},
+      {t:'out',   v:'    whoami        current user'},
+      {t:'out',   v:'    id            user & group IDs'},
+      {t:'out',   v:'    uname -a      full system info'},
+      {t:'out',   v:'    hostname      show hostname'},
+      {t:'out',   v:'    uptime        system uptime'},
+      {t:'out',   v:'    date          current date/time'},
+      {t:'out',   v:'    cal           calendar'},
+      {t:'dim',   v:''},
+      {t:'dim',   v:'  ■ FILE OPS'},
+      {t:'out',   v:'    ls [-la]      list files'},
+      {t:'out',   v:'    pwd           print working dir'},
+      {t:'out',   v:'    cd [dir]      change directory'},
+      {t:'out',   v:'    cat [file]    view file'},
+      {t:'dim',   v:''},
+      {t:'dim',   v:'  ■ NETWORK'},
+      {t:'out',   v:'    ifconfig      network interfaces'},
+      {t:'out',   v:'    nmap [ip]     port scan'},
+      {t:'out',   v:'    ping [host]   ICMP ping'},
+      {t:'dim',   v:''},
+      {t:'dim',   v:'  ■ PROCESSES'},
+      {t:'out',   v:'    ps aux        running processes'},
+      {t:'out',   v:'    top           live processes'},
+      {t:'out',   v:'    kill [pid]    kill process'},
+      {t:'dim',   v:''},
+      {t:'dim',   v:'  ■ MISC'},
+      {t:'out',   v:'    echo [text]   print text'},
+      {t:'out',   v:'    history       cmd history'},
+      {t:'out',   v:'    clear         clear screen'},
+      {t:'out',   v:'    neofetch      system info art'},
+      {t:'out',   v:'    figlet [txt]  ASCII banner'},
+      {t:'out',   v:'    cowsay [txt]  cow says'},
+      {t:'out',   v:'    banner        show welcome'},
+      {t:'out',   v:'    help          this menu'},
+   ];
+};
+
+commands.whoami  = () => [{t:'suc', v:'root'}];
+commands.hostname = () => [{t:'out', v:'kali'}];
+
+commands.id = () => [{t:'out', v:'uid=0(root) gid=0(root) groups=0(root),4(adm),20(dialout),27(sudo)'}];
+commands.pwd = () => [{t:'out', v: currentDir}];
+
+commands.date = function() {
+   const d = new Date();
+   const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+   return [{t:'out', v: `${days[d.getDay()]} ${months[d.getMonth()]} ${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')} UTC ${d.getFullYear()}`}];
+};
+
+commands.cal = function() {
+   const now = new Date();
+   const m = now.getMonth(), y = now.getFullYear();
+   const first = new Date(y, m, 1).getDay();
+   const daysInMonth = new Date(y, m + 1, 0).getDate();
+   const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+   let lines = [{t:'out', v: `     ${months[m]} ${y}`}, {t:'out', v:'Su Mo Tu We Th Fr Sa'}];
+   let row = '   '.repeat(first);
+   for (let d = 1; d <= daysInMonth; d++) {
+      row += String(d).padStart(2) + ' ';
+      if ((d + first) % 7 === 0 || d === daysInMonth) { lines.push({t:'out', v: row}); row = ''; }
+   }
+   return lines;
+};
+
+commands.uptime = function() {
+   return [{t:'out', v:`  ${Math.floor(Math.random()*72+1)} up ${Math.floor(Math.random()*60)} min,  1 user,  load: ${(Math.random()*2+0.1).toFixed(2)}, ${(Math.random()*1.5+0.1).toFixed(2)}, ${(Math.random()*1+0.1).toFixed(2)}`}];
+};
+
+commands['uname -a'] = () => [{t:'out', v:'Linux kali 6.8.11-amd64 #1 SMP PREEMPT_DYNAMIC Kali GNU/Linux Rolling (2026.1) x86_64 GNU/Linux'}];
+commands.uname = function(a) { return a === '-a' ? commands['uname -a']() : [{t:'out', v:'Linux'}]; };
+commands.echo = function(a) { return [{t:'suc', v: a || ''}]; };
+commands.banner = () => BANNER.trim().split('\n').map(l => ({t:'banner', v: l}));
+commands.clear = () => [];
+
+commands.history = function() {
+   const lines = cmdHistory.length ? cmdHistory.map((c,i) => ({t:'out', v:`  ${String(i+1).padStart(4)}  ${c}`})) : [{t:'dim', v:'  (no commands yet)'}];
+   return lines;
+};
+
+commands.ifconfig = function() {
+   return [
+      {t:'out', v:'eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500'},
+      {t:'out', v:'      inet 10.10.10.2  netmask 255.255.255.0  broadcast 10.10.10.255'},
+      {t:'out', v:'      inet6 fe80::a00:27ff:fe4e:66a1  prefixlen 64  scopeid 0x20<link>'},
+      {t:'out', v:'      ether 08:00:27:4e:66:a1  txqueuelen 1000  (Ethernet)'},
+      {t:'out', v:'      RX packets 18234  bytes 18.2 MB  TX packets 14209  bytes 12.8 MB'},
+      {t:'out', v:''},
+      {t:'out', v:'lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536'},
+      {t:'out', v:'      inet 127.0.0.1  netmask 255.0.0.0'},
+   ];
+};
+
+const virtualFiles = {
+   '/root': [{n:'Desktop',t:'d',s:4096},{n:'Documents',t:'d',s:4096},{n:'Downloads',t:'d',s:4096},{n:'tools',t:'d',s:4096},{n:'scripts',t:'d',s:4096},{n:'notes.txt',t:'-',s:284},{n:'target.txt',t:'-',s:128},{n:'flag.txt',t:'-',s:64},{n:'creds.txt',t:'-',s:96},{n:'wordlist.txt',t:'-',s:4096}],
+   '/root/Desktop': [{n:'hacker-tools',t:'d',s:4096},{n:'readme.md',t:'-',s:320},{n:'todo.txt',t:'-',s:128}],
+   '/root/Documents': [{n:'recon-notes.txt',t:'-',s:512},{n:'exploit-draft.py',t:'-',s:2048},{n:'report.pdf',t:'-',s:12288}],
+   '/root/Downloads': [{n:'payload.tar.gz',t:'-',s:24576},{n:'wordlist-rockyou.txt',t:'-',s:1048576}],
+   '/root/tools': [{n:'nmap',t:'d',s:4096},{n:'gobuster',t:'-',s:8192},{n:'hydra',t:'-',s:12288},{n:'john',t:'d',s:4096},{n:'sqlmap',t:'-',s:16384}],
+   '/root/scripts': [{n:'recon.sh',t:'-',s:512},{n:'bruteforce.py',t:'-',s:2048},{n:'cleanup.sh',t:'-',s:256}],
+};
+function getFiles(dir) { return virtualFiles[dir] || null; }
+
+commands.ls = function(args) {
+   const files = getFiles(currentDir);
+   if (!files) return [{t:'out', v:'(empty directory)'}];
+   const long = (args === '-la' || args === '-al' || args === '-l');
+   if (!long) return [{t:'info', v: files.map(f => f.n).join('   ')}];
+   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+   const now = new Date();
+   const lines = [{t:'out', v:`total ${files.length}`}];
+   files.forEach(f => {
+      const p = (f.t === 'd' ? 'drwxr-xr-x' : (f.n === 'flag.txt' || f.n === 'creds.txt' ? '-rw-------' : '-rw-r--r--'));
+      lines.push({t:'out', v:`${p}  ${f.t==='d'?'2':'1'} root root ${String(f.s).padStart(6)} ${months[now.getMonth()]} ${String(now.getDate()).padStart(2)} ${String(now.getHours()).padStart(2)}:${String(now.getMinutes()).padStart(2)} ${f.n}`});
+   });
+   return lines;
+};
+
+commands.cd = function(args) {
+   const target = (args || '').trim() || '/root';
+   if (target === '~' || target === '' || target === '/root') { currentDir = HOME_DIR; return []; }
+   if (target === '..') {
+      const parts = currentDir.split('/').filter(Boolean);
+      if (currentDir === '/root') { currentDir = '/'; return []; }
+      parts.pop();
+      currentDir = '/' + parts.join('/') || '/';
+      return [];
+   }
+   if (target === '/') { currentDir = '/'; return []; }
+   if (target === '.') return [];
+   let newDir = target.startsWith('/') ? target : currentDir + '/' + target;
+   newDir = newDir.replace(/\/+/g, '/').replace(/\/$/, '') || '/';
+   if (getFiles(newDir) || newDir === '/' || newDir === HOME_DIR) { currentDir = newDir; return []; }
+   return [{t:'err', v:`cd: ${target}: No such directory`}];
+};
+
+commands.cat = function(args) {
+   const file = (args || '').trim();
+   if (!file) return [{t:'err', v:'Usage: cat [filename]'}];
+   let fullPath = file.startsWith('/') ? file : currentDir + '/' + file;
+   fullPath = fullPath.replace(/\/+/g, '/');
+   const fileData = {
+      '/root/notes.txt': [
+         {t:'info', v:'╔══════════════════════════════════╗'},
+         {t:'info', v:'║         HACKING NOTES            ║'},
+         {t:'info', v:'╚══════════════════════════════════╝'},
+         {t:'out', v:''},
+         {t:'out', v:'# Pentesting Methodology Notes'},
+         {t:'out', v:'1. Always start with recon — nmap, gobuster'},
+         {t:'out', v:'2. Identify open ports and service versions'},
+         {t:'out', v:'3. Search for known exploits — searchsploit'},
+         {t:'out', v:'4. WinPEAS / LinPEAS for privesc'},
+         {t:'out', v:'5. ALWAYS get proper authorization'},
+         {t:'dim', v:'  "With great power comes great responsibility"'},
+      ],
+      '/root/flag.txt': [
+         {t:'suc', v:'╔══════════════════════════════════╗'},
+         {t:'suc', v:'║          FLAG CAPTURED!          ║'},
+         {t:'suc', v:'╚══════════════════════════════════╝'},
+         {t:'suc', v:'  FLAG{h4ck3r_w0rld_4dv4nc3d_t3rm1n4l_v3}'},
+         {t:'info', v:'  +250 points — Mission Complete!'},
+      ],
+      '/root/target.txt': [
+         {t:'out', v:'╔══ TARGET INFO ══╗'},
+         {t:'out', v:'  IP:     10.10.10.5'},
+         {t:'out', v:'  OS:     Ubuntu 22.04 LTS'},
+         {t:'out', v:'  Ports:  22 (SSH), 80 (HTTP), 443 (HTTPS)'},
+      ],
+      '/root/creds.txt': [{t:'err', v:'cat: creds.txt: Permission denied'}],
+      '/root/wordlist.txt': [{t:'out', v:'admin  password  123456  root  toor  hacker  kali'}, {t:'info', v:'[... 4096 more entries]'}],
+   };
+   if (fileData[fullPath]) return fileData[fullPath];
+   const files = getFiles(currentDir);
+   if (files && files.find(f => f.n === file && f.t === '-')) return [{t:'out', v:`(file: ${file} — use cat on full path)`}];
+   return [{t:'err', v:`cat: ${file}: No such file or directory`}];
+};
+
+commands.nmap = function(args) {
+   if (!args) {
+      return [
+         {t:'info', v:'Starting Nmap 7.95 at ' + new Date().toLocaleString()},
+         {t:'out', v:'Nmap scan report for 10.10.10.5'},
+         {t:'out', v:'Host is up (0.0012s latency).'},
+         {t:'suc', v:'22/tcp   open     ssh'},
+         {t:'suc', v:'80/tcp   open     http'},
+         {t:'suc', v:'443/tcp  open     https'},
+         {t:'info', v:'Nmap done: 1 IP address scanned in 2.47s'},
+      ];
+   }
+   return [
+      {t:'info', v:'Starting Nmap 7.95 — Scan initiated'},
+      {t:'out', v:`Nmap scan report for ${args}`},
+      {t:'out', v:'Host is up (0.0023s latency).'},
+      {t:'suc', v:'22/tcp   open   ssh'},
+      {t:'suc', v:'80/tcp   open   http'},
+      {t:'suc', v:'443/tcp  open   https'},
+   ];
+};
+
+commands.ping = function(args) {
+   const host = (args || '8.8.8.8').trim();
+   const lines = [{t:'info', v:`PING ${host} (8.8.8.8) 56(84) bytes of data.`}];
+   for (let i = 1; i <= 4; i++) {
+      lines.push({t:'out', v:`64 bytes from ${host}: icmp_seq=${i} ttl=64 time=${(Math.random()*3+0.5).toFixed(2)} ms`});
+   }
+   lines.push({t:'suc', v:'--- ping statistics ---'});
+   lines.push({t:'out', v:'4 packets transmitted, 4 received, 0% packet loss'});
+   return lines;
+};
+
+commands['ps aux'] = function() {
+   return [
+      {t:'out', v:'USER       PID  %CPU %MEM    VSZ   RSS   COMMAND'},
+      {t:'out', v:'root         1   0.0  0.1  16856  1024   /sbin/init'},
+      {t:'out', v:'root       412   0.0  0.3  114200  3072   /usr/sbin/sshd'},
+      {t:'out', v:'root       580   0.1  0.8  45256  8192   /usr/sbin/apache2'},
+   ];
+};
+commands.ps = function(a) { return a === 'aux' ? commands['ps aux']() : [{t:'err', v:'Usage: ps aux'}]; };
+
+commands.top = function() {
+   return [
+      {t:'info', v:'top — ' + new Date().toLocaleTimeString() + ' up 2:32, 1 user, load: 0.08'},
+      {t:'out', v:'PID  USER   PR  NI  VIRT    RES    SHR S  %CPU  %MEM   COMMAND'},
+      {t:'out', v:'580  root   20  0   45256   8192   3124 S   0.3   0.8   apache2'},
+      {t:'out', v:'412  root   20  0   114200  3072   1892 S   0.1   0.3   sshd'},
+   ];
+};
+
+commands.kill = function(a) {
+   const pid = parseInt(a);
+   if (isNaN(pid)) return [{t:'err', v:'kill: invalid PID'}];
+   return pid === 1 ? [{t:'err', v:'kill: cannot kill init'}] : [{t:'suc', v:`[+] Process ${pid} terminated (SIGTERM)`}];
+};
+
+commands.figlet = function() {
+   return [{t:'banner', v:`
+ ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄
+▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
+▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌
+▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌
+▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌       ▐░▌
+▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌
+ ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀
+`.trim()}];
+};
+
+commands.cowsay = function(args) {
+   const text = (args || 'Moo!').trim();
+   return [
+      {t:'out', v:` ${'_'.repeat(text.length+2)}`},
+      {t:'out', v:`< ${text} >`},
+      {t:'out', v:` ${'_'.repeat(text.length+2).replace(/_/g,'-')}`},
+      {t:'out', v:`        \\   ^__^`},
+      {t:'out', v:`         \\  (oo)\\_______`},
+      {t:'out', v:`            (__)\\       )\\/\\`},
+      {t:'out', v:`                ||----w |`},
+      {t:'out', v:`                ||     ||`},
+   ];
+};
+
+commands.neofetch = function() {
+   return [
+      {t:'suc', v:'       ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄'},
+      {t:'suc', v:'      ██   root@kali                      ██'},
+      {t:'suc', v:'      ██   OS: Kali GNU/Linux 2026.1      ██'},
+      {t:'suc', v:'      ██   Kernel: 6.8.11-amd64           ██'},
+      {t:'suc', v:'      ██   Uptime: 2h 32m                 ██'},
+      {t:'suc', v:'      ██   Shell: zsh 5.9                 ██'},
+      {t:'suc', v:'      ██   Terminal: HackerWorld v3.0     ██'},
+      {t:'suc', v:'      ██   Memory: 5872MiB / 15986MiB     ██'},
+      {t:'suc', v:'      ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀'},
+   ];
+};
+
+/* ═══════════════════ DISPATCHER ═══════════════ */
+function processCommand(raw) {
+   const cmd = raw.trim();
+   if (!cmd) return;
+   cmdHistory.unshift(cmd);
+   historyIdx = -1;
+   addPrompt(cmd);
+
+   if (cmd === 'clear') { outputEl.innerHTML = '';  addLine(''); return; }
+
+   const parts = cmd.split(/\s+/);
+   const base  = parts[0];
+   const rest  = parts.slice(1).join(' ');
+
+   // Try exact match first (e.g., "uname -a", "ps aux", "ip a")
+   if (commands[cmd]) {
+      const result = commands[cmd](rest);
+      result.forEach(r => addLine(r.v, r.t));
+      return;
+   }
+   // Try base command
+   if (commands[base]) {
+      const result = commands[base](rest);
+      result.forEach(r => addLine(r.v, r.t));
+      return;
+   }
+
+   addLine(`bash: ${base}: command not found`, 'error');
+   addLine('Type "help" for available commands.', 'info');
+}
+
+/* ═══════════════════ AUTOCOMPLETE ═══════════════ */
+function getAutoCmds() {
+   const all = Object.keys(commands).filter(k => !k.includes(' '));
+   const extras = ['sudo','apt','grep','chmod','chown','mv','cp','rm','mkdir','touch','ssh','scp','nano','vim','less','man'];
+   return [...new Set([...all, ...extras])].sort();
+}
+
+function doAutocomplete() {
+   const val = inputEl.value;
+   if (!val) return;
+   const cmds = getAutoCmds();
+   const matches = cmds.filter(c => c.startsWith(val));
+   if (matches.length === 1) {
+      inputEl.value = matches[0] + ' ';
+   } else if (matches.length > 1) {
+      let prefix = matches[0];
+      for (let i = 1; i < matches.length; i++) {
+         while (matches[i].indexOf(prefix) !== 0) prefix = prefix.slice(0, -1);
+      }
+      if (prefix !== val) inputEl.value = prefix;
+      else addLine(matches.join('  '), 'dim');
+   }
+}
+
+/* ═══════════════════ INPUT EVENTS ═══════════════ */
+inputEl.addEventListener('keydown', e => {
+   if (e.key === 'Enter') {
+      e.preventDefault();
+      processCommand(inputEl.value);
+      inputEl.value = '';
+   } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (historyIdx < cmdHistory.length - 1) {
+         historyIdx++;
+         inputEl.value = cmdHistory[historyIdx];
+      }
+   } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (historyIdx > 0) { historyIdx--; inputEl.value = cmdHistory[historyIdx]; }
+      else { historyIdx = -1; inputEl.value = ''; }
+   } else if (e.key === 'Tab') {
+      e.preventDefault();
+      doAutocomplete();
+   } else if (e.key === 'l' && e.ctrlKey) {
+      e.preventDefault();
+      outputEl.innerHTML = '';
+      addLine('');
+   }
+});
+
+/* ═══════════════════ BOOT SEQUENCE ═══════════════ */
+function bootSequence() {
+   const bootLines = [
+      {t:'', v:''},
+      {t:'banner', v: BANNER.trim()},
+      {t:'', v:''},
+      {t:'info', v:'  [*] Initializing kernel modules...'},
+      {t:'info', v:'  [*] Loading network interfaces...'},
+      {t:'suc', v:'  [+] eth0: 10.10.10.2/24 (connected)'},
+      {t:'info', v:'  [*] Starting system services...'},
+      {t:'suc', v:'  [+] sshd — running (PID 412)'},
+      {t:'suc', v:'  [+] apache2 — running (PID 580)'},
+      {t:'', v:''},
+      {t:'out', v:'  ───────────────────────────────────────────────'},
+      {t:'out', v:'  Type  help  to see all available commands.'},
+      {t:'', v:''},
+   ];
+
+   let idx = 0;
+   function showNext() {
+      if (idx >= bootLines.length) {
+         addPrompt('');
+         inputEl.focus();
+         return;
+      }
+      const line = bootLines[idx];
+      if (line.v) addLine(line.v, line.t);
+      idx++;
+      setTimeout(showNext, 60);
+   }
+   showNext();
+}
+
+bootSequence();
+document.querySelector('.term-wrapper').addEventListener('click', () => inputEl.focus());
+window.addEventListener('load', () => setTimeout(() => inputEl.focus(), 500));
+console.log('%c Kali Terminal v3.0 — Fixed ✅', 'color: #00ff88; font-size: 20px; font-weight: bold;');
+</script>
+
+</body>
+</html>
