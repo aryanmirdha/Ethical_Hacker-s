@@ -20,6 +20,10 @@ let char = 0;
 
 const typingElement = document.getElementById("typing-text");
 
+/* =========================
+   TERMINAL TYPING EFFECT
+========================= */
+
 function typeEffect(){
 
 if(line < textLines.length){
@@ -47,6 +51,34 @@ setTimeout(typeEffect,250);
 
 }
 
+/* =========================
+   PROFILE IMAGE SHRINK
+========================= */
+
+const profileImage = document.querySelector(".hero-image img");
+
+window.addEventListener("scroll",()=>{
+
+if(profileImage){
+
+if(window.scrollY > 150){
+
+profileImage.classList.add("shrink");
+
+}else{
+
+profileImage.classList.remove("shrink");
+
+}
+
+}
+
+});
+
+/* =========================
+   PAGE LOAD
+========================= */
+
 window.addEventListener("load",()=>{
 
 if(typingElement){
@@ -54,4 +86,3 @@ typeEffect();
 }
 
 });
-
