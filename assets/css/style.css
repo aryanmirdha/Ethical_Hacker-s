@@ -175,6 +175,7 @@ body::before {
 .hero-image {
    flex: 1;
    display: flex;
+   flex-direction: column;
    justify-content: center;
    align-items: center;
    position: relative;
@@ -207,6 +208,21 @@ body::before {
 
 .hero-image img:hover {
    transform: scale(1.05);
+}
+
+/* PROFILE NAME */
+
+.profile-name {
+   margin-top: 25px;
+   font-size: 28px;
+   font-weight: 900;
+   color: #ff1a1a;
+   letter-spacing: 4px;
+   text-transform: uppercase;
+   text-shadow:
+      0 0 10px rgba(255,0,0,.8),
+      0 0 25px rgba(255,0,0,.4);
+   font-family: monospace;
 }
 
 /* =========================
@@ -284,6 +300,105 @@ body::before {
    transform: translateY(-8px);
    border-color: rgba(255, 0, 0, .3);
    box-shadow: 0 20px 60px rgba(0, 0, 0, .7);
+}
+
+/* =========================
+   COURSE / LABS / EBOOK HOVER EFFECT
+========================= */
+
+.course-grid{
+   display:grid;
+   grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+   gap:35px;
+   padding:70px 8%;
+}
+
+.course-card,
+.ebook-card{
+   display:block;
+   text-decoration:none;
+   color:#F5F3F4;
+   background:#0b0b0b;
+   border:1px solid rgba(255,255,255,.05);
+   overflow:hidden;
+   position:relative;
+   transition:
+   transform .35s ease,
+   box-shadow .35s ease,
+   border-color .35s ease;
+}
+
+.course-card::before,
+.ebook-card::before{
+   content:"";
+   position:absolute;
+   left:0;
+   top:0;
+   width:100%;
+   height:3px;
+   background:#ff1a1a;
+   transform:scaleX(0);
+   transform-origin:left;
+   transition:.35s ease;
+   z-index:3;
+}
+
+.course-card:hover::before,
+.ebook-card:hover::before{
+   transform:scaleX(1);
+}
+
+.course-card:hover,
+.ebook-card:hover{
+   transform:translateY(-10px);
+   border-color:rgba(255,0,0,.4);
+   box-shadow:
+   0 25px 70px rgba(0,0,0,.85),
+   0 0 30px rgba(255,0,0,.12);
+}
+
+.course-card img,
+.ebook-card img{
+   width:100%;
+   height:240px;
+   object-fit:cover;
+   transition:
+   transform .4s ease,
+   filter .4s ease;
+   filter:brightness(.82);
+}
+
+.course-card:hover img,
+.ebook-card:hover img{
+   transform:scale(1.06);
+   filter:brightness(1);
+}
+
+.course-card h3,
+.ebook-card h3{
+   padding:22px 22px 10px;
+   font-size:22px;
+   line-height:1.5;
+   transition:color .3s ease;
+}
+
+.course-card:hover h3,
+.ebook-card:hover h3{
+   color:#ff1a1a;
+}
+
+.course-card p,
+.ebook-card p{
+   opacity:.82;
+   font-size:14px;
+   line-height:1.8;
+   padding:0 22px 10px;
+   color:#D3D3D3;
+}
+
+.course-card .btn,
+.ebook-card .btn{
+   margin:20px 22px 25px;
 }
 
 /* =========================
@@ -546,4 +661,3 @@ body::before {
    }
 
 }
-
