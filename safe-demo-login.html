@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safe SQLi Demo</title>
+
+<style>
+
+body{
+  margin:0;
+  background:#050505;
+  color:#00ff88;
+  font-family:monospace;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.login-box{
+  width:350px;
+  background:#0b0b0b;
+  border:1px solid #222;
+  padding:30px;
+  border-radius:10px;
+  box-shadow:0 0 20px rgba(0,255,136,.1);
+}
+
+h1{
+  text-align:center;
+  margin-bottom:25px;
+}
+
+h1 span{
+  color:#ff1a1a;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin-bottom:15px;
+  background:black;
+  border:1px solid #333;
+  color:#00ff88;
+  outline:none;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  background:#ff1a1a;
+  border:none;
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+button:hover{
+  opacity:.9;
+}
+
+.result{
+  margin-top:20px;
+  background:#080808;
+  border:1px solid #222;
+  padding:15px;
+  min-height:100px;
+  color:#aaa;
+}
+
+.payloads{
+  margin-top:20px;
+  font-size:13px;
+  color:#666;
+}
+
+.payloads code{
+  display:block;
+  margin-top:8px;
+  color:#00ff88;
+}
+
+</style>
+</head>
+<body>
+
+<div class="login-box">
+
+<h1>SQLi <span>DEMO</span></h1>
+
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="testLogin()">
+Login
+</button>
+
+<div class="result" id="result">
+[*] Waiting for login attempt...
+</div>
+
+<div class="payloads">
+Educational demo payload examples:
+
+<code>' OR '1'='1</code>
+<code>admin' --</code>
+<code>' UNION SELECT NULL--</code>
+</div>
+
+</div>
+
+<script>
+
+function testLogin(){
+
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  const result = document.getElementById("result");
+
+  const fakeQuery = `SELECT * FROM users WHERE username='${username}' AND password='${password}'`;
+
+  if(
+    username.includes("' OR '1'='1") ||
+    password.includes("' OR '1'='1") ||
+    username.includes("--") ||
+    password.includes("--")
+  ){
+
+    result.innerHTML = `
+      [+] Simulated SQL Injection Detected<br><br>
+      Query:<br>
+      ${fakeQuery}<br><br>
+      [+] Login Bypass Successful (Simulation Only)
+    `;
+
+  }else if(username === "admin" && password === "admin123"){
+
+    result.innerHTML = `
+      [+] Valid Login<br><br>
+      Query:<br>
+      ${fakeQuery}
+    `;
+
+  }else{
+
+    result.innerHTML = `
+      [-] Invalid Credentials<br><br>
+      Query:<br>
+      ${fakeQuery}
+    `;
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>

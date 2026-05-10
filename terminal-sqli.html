@@ -1,0 +1,287 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SQLi Terminal</title>
+
+<link rel="stylesheet" href="assets/css/sqli.css">
+
+</head>
+
+<body>
+
+<!-- MATRIX BACKGROUND -->
+
+<canvas id="matrix"></canvas>
+
+<!-- PAGE -->
+
+<section class="sqli-page">
+
+<h1>
+SQLi <span>TERMINAL</span>
+</h1>
+
+<p class="sub">
+// Educational SQL Injection Pentest Simulator
+</p>
+
+<!-- TOOLBAR -->
+
+<div class="sqli-toolbar">
+
+<button class="sqli-btn">
+▶ Start Lab
+</button>
+
+<button class="sqli-btn" onclick="clearLogs()">
+■ Reset
+</button>
+
+<button class="sqli-btn" onclick="setPayload(`' OR '1'='1`)">
+Auth Bypass
+</button>
+
+<button class="sqli-btn" onclick="setPayload(`UNION SELECT NULL,NULL--`)">
+UNION
+</button>
+
+<button class="sqli-btn" onclick="setPayload(`' AND 1=CONVERT(int,(SELECT @@version))--`)">
+Error Based
+</button>
+
+<button class="sqli-btn" onclick="setPayload(`admin' AND SUBSTRING(password,1,1)='a'--`)">
+Blind SQLi
+</button>
+
+</div>
+
+<!-- PAYLOAD BAR -->
+
+<div class="payload-bar">
+
+<input
+type="text"
+id="payloadInput"
+class="payload-input"
+placeholder="Enter SQLi Payload..."
+>
+
+<button class="run-btn" onclick="runPayload()">
+RUN
+</button>
+
+</div>
+
+<!-- SAFE DEMO BUTTON -->
+
+<div style="margin-top:20px;">
+
+<a href="safe-demo-login.html" class="run-btn" style="text-decoration:none; display:inline-block;">
+Open Safe Demo →
+</a>
+
+<a href="advanced-sqli-lab.html" class="run-btn" style="text-decoration:none; display:inline-block; margin-left:10px;">
+Advanced SQLi Lab →
+</a>
+
+</div>
+
+<!-- TABLE -->
+
+<div class="table-wrap">
+
+<table class="sqli-table">
+
+<thead>
+
+<tr>
+
+<th>#</th>
+<th>Time</th>
+<th>Payload</th>
+<th>Status</th>
+<th>Response</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tableBody"></tbody>
+
+</table>
+
+</div>
+
+<!-- PANELS -->
+
+<div class="sqli-panels">
+
+<div class="panel">
+
+<h3>
+Query Analysis
+</h3>
+
+<div class="query-box" id="queryBox">
+
+SELECT * FROM users
+WHERE username='admin'
+AND password='123';
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<h3>
+Response Terminal
+</h3>
+
+<div class="terminal-log" id="terminalLog">
+
+<p>[*] Waiting for payload...</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- STATUS -->
+
+<div class="status-bar">
+
+<span class="high">
+Risk: HIGH
+</span>
+
+<span>
+Database: MySQL
+</span>
+
+<span>
+WAF: Disabled
+</span>
+
+<span>
+Injection: Possible
+</span>
+
+</div>
+
+<!-- INFO CARDS -->
+
+<div class="info-grid">
+
+<div class="info-card">
+
+<h4>
+Auth Bypass
+</h4>
+
+<p>
+Login bypass payloads authentication ko break karte hain.
+</p>
+
+</div>
+
+<div class="info-card">
+
+<h4>
+UNION SQLi
+</h4>
+
+<p>
+UNION injection database data retrieve karta hai.
+</p>
+
+</div>
+
+<div class="info-card">
+
+<h4>
+Blind SQLi
+</h4>
+
+<p>
+Blind SQLi true/false responses observe karta hai.
+</p>
+
+</div>
+
+<div class="info-card">
+
+<h4>
+Error Based
+</h4>
+
+<p>
+Database errors sensitive information leak kar sakte hain.
+</p>
+
+</div>
+
+</div>
+
+<!-- SAFE LOGIN DEMO -->
+
+<section class="info-grid" style="margin-top:40px;">
+
+<div class="info-card" style="width:100%;">
+
+<h4>
+Safe SQLi Demo Login
+</h4>
+
+<p>
+Educational fake login simulation jahan tum SQLi payloads safely test kar sakte ho.
+</p>
+
+<br>
+
+<a href="safe-demo-login.html" class="run-btn" style="text-decoration:none;">
+Launch Demo →
+</a>
+
+</div>
+
+</section>
+
+<!-- ADVANCED LAB -->
+
+<section class="info-grid" style="margin-top:20px;">
+
+<div class="info-card" style="width:100%;">
+
+<h4>
+Advanced SQLi Practice Lab
+</h4>
+
+<p>
+PortSwigger-style interactive SQL Injection learning lab with fake database simulation, payload playground, UNION SQLi, Blind SQLi and query analysis.
+</p>
+
+<br>
+
+<a href="advanced-sqli-lab.html" class="run-btn" style="text-decoration:none;">
+Open Advanced Lab →
+</a>
+
+</div>
+
+</section>
+
+</section>
+
+<script src="assets/js/sqli.js"></script>
+
+</body>
+</html>
+```

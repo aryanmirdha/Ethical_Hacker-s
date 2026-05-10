@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced SQLi Lab</title>
+
+<link rel="stylesheet" href="assets/css/advanced-sqli.css">
+
+</head>
+<body>
+
+<div class="container">
+
+<h1 class="title">
+SQLi <span>LAB</span>
+</h1>
+
+<p class="sub">
+Educational SQL Injection Simulation
+</p>
+
+<div class="grid">
+
+<!-- LEFT -->
+
+<div class="box">
+
+<h3>Login Lab</h3>
+
+<input type="text" id="username" placeholder="Username">
+
+<input type="password" id="password" placeholder="Password">
+
+<select id="labType">
+
+<option value="auth">
+Auth Bypass
+</option>
+
+<option value="union">
+UNION Based
+</option>
+
+<option value="error">
+Error Based
+</option>
+
+<option value="blind">
+Blind SQLi
+</option>
+
+</select>
+
+<button onclick="runLab()">
+Run Payload
+</button>
+
+<button onclick="clearLab()">
+Reset
+</button>
+
+<div class="query" id="queryBox">
+
+SELECT * FROM users
+WHERE username='admin'
+AND password='123';
+
+</div>
+
+<div class="result" id="resultBox">
+
+[*] Waiting for payload...
+
+</div>
+
+</div>
+
+<!-- RIGHT -->
+
+<div class="box">
+
+<h3>Payload Playground</h3>
+
+<div class="payloads">
+
+<code onclick="setPayload(this.innerText)">
+' OR '1'='1
+</code>
+
+<code onclick="setPayload(this.innerText)">
+admin' --
+</code>
+
+<code onclick="setPayload(this.innerText)">
+' UNION SELECT NULL,NULL--
+</code>
+
+<code onclick="setPayload(this.innerText)">
+' AND 1=CONVERT(int,(SELECT @@version))--
+</code>
+
+<code onclick="setPayload(this.innerText)">
+admin' AND SUBSTRING(password,1,1)='a'--
+</code>
+
+</div>
+
+<div class="terminal" id="terminal">
+
+[+] SQLi Lab Initialized...<br>
+[+] Simulated MySQL Backend Ready...<br>
+[+] WAF Status: Disabled<br>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="box table-box">
+
+<h3>Fake Database Records</h3>
+
+<table>
+
+<tr>
+<th>ID</th>
+<th>Username</th>
+<th>Role</th>
+<th>Status</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>admin</td>
+<td>Administrator</td>
+<td class="success">Active</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>guest</td>
+<td>User</td>
+<td class="warning">Limited</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>developer</td>
+<td>DevOps</td>
+<td class="success">Active</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<script src="assets/js/advanced-sqli.js"></script>
+
+</body>
+</html>
