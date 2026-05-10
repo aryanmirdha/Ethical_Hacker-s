@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Hacker Chatbot</title>
+
+<link rel="stylesheet" href="assets/css/style.css">
+
+<style>
+body{
+  background:#050505;
+  color:white;
+  font-family:Arial;
+}
+
+/* CHAT BOX */
+.chat-container{
+  width: 100%;
+  max-width: 600px;
+  margin: 50px auto;
+  border: 1px solid #ff1a1a;
+  padding: 20px;
+  border-radius: 10px;
+  background:#0d0d0d;
+}
+
+/* MESSAGES */
+.messages{
+  height: 300px;
+  overflow-y: auto;
+  border-bottom: 1px solid #333;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+/* INPUT */
+input{
+  width: 80%;
+  padding: 10px;
+  background:black;
+  border:1px solid #333;
+  color:white;
+}
+
+button{
+  padding: 10px;
+  background:#ff1a1a;
+  border:none;
+  color:white;
+  cursor:pointer;
+}
+
+/* JOIN BUTTON */
+.join-btn{
+  margin-top: 15px;
+  width: 100%;
+  background:#111;
+  border:1px solid #ff1a1a;
+  color:#ff1a1a;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- CHATBOT BOX -->
+<div class="chat-container">
+
+  <h2>💀 Hacker Chatbot</h2>
+
+  <div class="messages" id="chat">
+    <p><b>Bot:</b> Welcome to Hacker World 👾</p>
+  </div>
+
+  <input type="text" id="userInput" placeholder="Type message...">
+  <button onclick="sendMessage()">Send</button>
+
+  <!-- JOIN BUTTON -->
+  <button class="join-btn" onclick="toggleForm()">
+    JOIN COURSE
+  </button>
+
+</div>
+
+<!-- JOIN FORM (hidden popup) -->
+<div id="joinForm" style="
+display:none;
+position:fixed;
+bottom:20px;
+right:20px;
+background:#0d0d0d;
+border:1px solid #ff1a1a;
+padding:15px;
+width:250px;
+border-radius:10px;
+">
+
+<h3 style="color:#ff1a1a;">Join Now</h3>
+
+<input placeholder="Name"><br><br>
+<input placeholder="Number"><br><br>
+<input placeholder="Address"><br><br>
+
+<select>
+  <option>What you want?</option>
+  <option>Ethical Hacking</option>
+  <option>Web Hacking</option>
+  <option>Bug Bounty</option>
+</select>
+
+<br><br>
+
+<button style="width:100%; background:#ff1a1a; color:white;">
+Submit
+</button>
+
+</div>
+
+<script>
+function sendMessage(){
+  let input = document.getElementById("userInput");
+  let chat = document.getElementById("chat");
+
+  chat.innerHTML += "<p><b>You:</b> " + input.value + "</p>";
+  input.value = "";
+}
+
+function toggleForm(){
+  let form = document.getElementById("joinForm");
+  if(form.style.display === "block"){
+    form.style.display = "none";
+  } else {
+    form.style.display = "block";
+  }
+}
+</script>
+
+</body>
+</html>

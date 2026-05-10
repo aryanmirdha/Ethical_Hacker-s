@@ -218,3 +218,53 @@ window.addEventListener("load", () => {
    });
 
 });
+// WhatsApp Group Link (YOUR LINK)
+const whatsappLink = "https://chat.whatsapp.com/GlWp1JeOFc3IOd0bMAiX0S";
+
+/* OPEN / CLOSE FORM */
+let btn = document.getElementById("joinBtn");
+let form = document.getElementById("joinForm");
+
+btn.onclick = function () {
+  form.style.display = form.style.display === "block" ? "none" : "block";
+};
+
+/* DRAG FEATURE */
+let isDown = false, offsetX, offsetY;
+
+btn.addEventListener("mousedown", (e)=>{
+  isDown = true;
+  offsetX = e.clientX - btn.offsetLeft;
+  offsetY = e.clientY - btn.offsetTop;
+  btn.style.cursor = "grabbing";
+});
+
+document.addEventListener("mousemove", (e)=>{
+  if(!isDown) return;
+  btn.style.left = (e.clientX - offsetX) + "px";
+  btn.style.top = (e.clientY - offsetY) + "px";
+  btn.style.bottom = "auto";
+  btn.style.right = "auto";
+});
+
+document.addEventListener("mouseup", ()=>{
+  isDown = false;
+  btn.style.cursor = "grab";
+});
+
+/* SUBMIT FUNCTION */
+function joinSubmit(){
+
+  let name = document.getElementById("name").value;
+  let phone = document.getElementById("phone").value;
+  let address = document.getElementById("address").value;
+  let interest = document.getElementById("interest").value;
+
+  if(!name || !phone || !address || !interest){
+    alert("⚠️ Please fill all fields");
+    return;
+  }
+
+  // OPEN WHATSAPP GROUP
+  window.open(whatsappLink, "https://chat.whatsapp.com/GlWp1JeOFc3IOd0bMAiX0S");
+}

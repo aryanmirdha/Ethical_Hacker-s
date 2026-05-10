@@ -676,3 +676,59 @@ body::before {
    transition: left 2.5s ease-in-out, top 2.5s ease-in-out;
    filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));
 }
+
+
+/* JOIN BUTTON */
+#joinBtn{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ff1a1a;
+  color: white;
+  padding: 14px 18px;
+  border-radius: 50%;
+  cursor: grab;
+  font-weight: bold;
+  z-index: 9999;
+  box-shadow: 0 0 15px #ff1a1a;
+  user-select: none;
+}
+
+/* FORM */
+#joinForm{
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 260px;
+  background: #0d0d0d;
+  border: 1px solid #ff1a1a;
+  padding: 15px;
+  border-radius: 10px;
+  display: none;
+  z-index: 9999;
+}
+
+#joinForm h3{
+  color:#ff1a1a;
+  margin-bottom:10px;
+}
+
+#joinForm input,
+#joinForm select{
+  width:100%;
+  margin:6px 0;
+  padding:8px;
+  background:black;
+  color:white;
+  border:1px solid #333;
+  border-radius:5px;
+}
+
+#joinForm button{
+  width:100%;
+  padding:10px;
+  background:#ff1a1a;
+  border:none;
+  color:white;
+  cursor:pointer;
+}
