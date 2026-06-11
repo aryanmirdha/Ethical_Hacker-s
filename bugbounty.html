@@ -16,36 +16,217 @@
 
 <h1>Bug Bounty Fundamentals</h1>
 
+<h2>Introduction to Bug Bounty Hunting</h2>
+
 <p>
-Bug bounty programs allow ethical hackers to find vulnerabilities in real-world applications and report them responsibly.
+Bug bounty hunting is one of the most exciting and rewarding areas of cybersecurity. Organizations around the world offer bug bounty programs that allow ethical hackers and security researchers to identify vulnerabilities in their applications, websites, APIs, and infrastructure in exchange for recognition and financial rewards.
 </p>
 
 <p>
-Students will learn reconnaissance, subdomain enumeration, vulnerability analysis, and responsible disclosure.
+Unlike traditional penetration testing, bug bounty programs focus on real-world targets and encourage continuous security testing. These programs help organizations improve their security posture while providing researchers with opportunities to develop practical skills and earn rewards.
+</p>
+
+<h2>What is a Bug Bounty Program?</h2>
+
+<p>
+A bug bounty program is a structured initiative that allows security researchers to responsibly discover and report vulnerabilities. Organizations define the scope, rules, and reward structure for their programs.
 </p>
 
 <p>
-Practical exercises include asset discovery, scanning, JavaScript analysis, and directory brute-forcing.
+Researchers test approved assets, identify security weaknesses, and submit detailed reports. If the vulnerability is valid and impactful, the organization may provide a monetary reward or public recognition.
+</p>
+
+<h2>Benefits of Bug Bounty Hunting</h2>
+
+<ul class="info-list">
+<li>Real-world security testing experience.</li>
+<li>Hands-on learning opportunities.</li>
+<li>Development of analytical and research skills.</li>
+<li>Professional recognition in cybersecurity communities.</li>
+<li>Potential financial rewards.</li>
+<li>Exposure to diverse technologies and applications.</li>
+</ul>
+
+<h2>Understanding Attack Surfaces</h2>
+
+<p>
+An attack surface represents all possible entry points that an attacker could target. Successful bug bounty hunters spend significant time identifying and mapping attack surfaces before testing.
 </p>
 
 <p>
-Students will understand how professional bug bounty hunters identify attack surfaces and weak configurations.
+Common attack surfaces include websites, APIs, mobile applications, authentication systems, cloud services, subdomains, and third-party integrations.
+</p>
+
+<h2>Reconnaissance Fundamentals</h2>
+
+<p>
+Reconnaissance is the process of gathering information about a target before performing security testing. It is one of the most important phases of bug bounty hunting because quality reconnaissance often leads to valuable findings.
+</p>
+
+<ul class="info-list">
+<li>Domain Enumeration</li>
+<li>Subdomain Discovery</li>
+<li>Technology Fingerprinting</li>
+<li>Directory Enumeration</li>
+<li>Historical Data Analysis</li>
+<li>Asset Mapping</li>
+</ul>
+
+<h2>Subdomain Enumeration</h2>
+
+<p>
+Large organizations often operate hundreds or thousands of subdomains. Some of these assets may contain vulnerabilities that are overlooked by developers.
 </p>
 
 <p>
-The course also teaches professional report writing and impact analysis techniques.
+Subdomain enumeration helps researchers discover hidden applications, development environments, staging servers, and forgotten assets that may expand the attack surface.
+</p>
+
+<h2>Asset Discovery</h2>
+
+<p>
+Asset discovery involves identifying all in-scope resources that belong to a target organization. The more assets discovered, the greater the likelihood of finding security weaknesses.
 </p>
 
 <p>
-Bug bounty hunting improves analytical thinking, patience, and technical research abilities.
+Researchers frequently analyze domains, subdomains, cloud resources, APIs, and publicly exposed services during this phase.
+</p>
+
+<h2>Directory and Content Discovery</h2>
+
+<p>
+Web applications often contain hidden files, directories, and administrative interfaces that are not directly linked from the main website.
 </p>
 
 <p>
-Hands-on labs simulate real bug bounty environments and vulnerability discovery processes.
+Directory discovery helps researchers identify exposed resources, configuration files, backup files, and administrative panels that could increase risk.
+</p>
+
+<h2>JavaScript Analysis</h2>
+
+<p>
+Modern web applications heavily rely on JavaScript. Security researchers often analyze JavaScript files to identify hidden endpoints, API references, sensitive information, and application logic flaws.
 </p>
 
 <p>
-By the end of this module, students will understand how modern bug bounty programs operate.
+JavaScript analysis can reveal valuable information that may not be visible through normal application usage.
+</p>
+
+<h2>Vulnerability Identification</h2>
+
+<p>
+Once reconnaissance is complete, researchers begin testing applications for security weaknesses.
+</p>
+
+<p>
+Common bug bounty vulnerabilities include:
+</p>
+
+<ul class="info-list">
+<li>Cross-Site Scripting (XSS)</li>
+<li>SQL Injection (SQLi)</li>
+<li>Broken Access Control</li>
+<li>Authentication Flaws</li>
+<li>Information Disclosure</li>
+<li>File Upload Vulnerabilities</li>
+<li>Server Misconfigurations</li>
+<li>Business Logic Flaws</li>
+</ul>
+
+<h2>Manual Testing Techniques</h2>
+
+<p>
+Although automation can improve efficiency, successful bug bounty hunters rely heavily on manual testing techniques. Manual analysis helps identify complex vulnerabilities that automated tools often miss.
+</p>
+
+<p>
+Understanding application behavior, workflows, and business logic is critical for discovering high-impact vulnerabilities.
+</p>
+
+<h2>Responsible Disclosure</h2>
+
+<p>
+Responsible disclosure is one of the most important principles in bug bounty hunting. Researchers must follow program rules, avoid disrupting services, and report vulnerabilities privately to the affected organization.
+</p>
+
+<p>
+Professionalism and ethical behavior are essential for maintaining trust between organizations and security researchers.
+</p>
+
+<h2>Writing Professional Reports</h2>
+
+<p>
+Finding a vulnerability is only part of the process. Clear and detailed reporting is equally important.
+</p>
+
+<p>
+A professional bug bounty report typically includes:
+</p>
+
+<ul class="info-list">
+<li>Vulnerability Title</li>
+<li>Description</li>
+<li>Affected Asset</li>
+<li>Steps to Reproduce</li>
+<li>Impact Assessment</li>
+<li>Proof of Concept</li>
+<li>Suggested Remediation</li>
+</ul>
+
+<h2>Impact Analysis</h2>
+
+<p>
+Impact analysis helps organizations understand the risk associated with a vulnerability. Researchers should clearly explain how an attacker could exploit the issue and what consequences may occur.
+</p>
+
+<p>
+Strong impact descriptions often improve report quality and increase the likelihood of rewards.
+</p>
+
+<h2>Popular Bug Bounty Platforms</h2>
+
+<ul class="info-list">
+<li>HackerOne</li>
+<li>Bugcrowd</li>
+<li>Intigriti</li>
+<li>YesWeHack</li>
+<li>Synack</li>
+</ul>
+
+<p>
+These platforms connect organizations with security researchers and provide structured vulnerability disclosure programs.
+</p>
+
+<h2>Practical Bug Bounty Labs</h2>
+
+<p>
+Hands-on labs help students practice reconnaissance, vulnerability assessment, reporting, and analysis in safe environments. Practical experience is essential for developing strong bug bounty skills.
+</p>
+
+<p>
+The ability to identify vulnerabilities consistently comes from continuous practice and research.
+</p>
+
+<h2>Career Opportunities</h2>
+
+<ul class="info-list">
+<li>Bug Bounty Hunter</li>
+<li>Penetration Tester</li>
+<li>Application Security Engineer</li>
+<li>Cybersecurity Analyst</li>
+<li>Security Consultant</li>
+<li>Red Team Operator</li>
+<li>Security Researcher</li>
+</ul>
+
+<h2>Conclusion</h2>
+
+<p>
+Bug bounty hunting is an excellent way to develop practical cybersecurity skills while contributing to the security of real-world systems. Through reconnaissance, vulnerability analysis, responsible disclosure, and professional reporting, researchers gain valuable experience that directly applies to penetration testing and application security careers.
+</p>
+
+<p>
+By mastering bug bounty fundamentals, students build the knowledge and confidence required to identify vulnerabilities, improve security, and participate in modern vulnerability disclosure programs.
 </p>
 
 </section>
