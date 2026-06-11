@@ -762,3 +762,69 @@ body::before {
 .whatsapp-btn:hover {
    transform: scale(1.1);
 }
+
+#featured-video{
+    text-align:center;
+    padding:50px 20px;
+    background:#111;
+    color:white;
+}
+
+.video-container{
+    max-width:1280px;
+    margin:auto;
+    position:relative;
+}
+
+.video-container iframe{
+    width:100%;
+    aspect-ratio:16/9;
+    border:none;
+    border-radius:15px;
+    box-shadow:0 0 25px rgba(255,0,0,0.4);
+    transition:0.4s ease;
+}
+
+.video-container iframe:hover{
+    transform:scale(1.01);
+    box-shadow:0 0 40px rgba(255,0,0,0.8);
+}
+
+#youtube-channel{
+    text-align:center;
+    padding:50px 20px;
+    background:#111;
+    color:white;
+}
+
+#youtube-channel h2{
+    margin-bottom:10px;
+}
+
+#youtube-channel p{
+    margin-bottom:20px;
+    color:#ccc;
+}
+
+#youtube-channel a{
+    display:inline-block;
+    padding:15px 35px;
+    background:linear-gradient(45deg,#ff0000,#ff3333);
+    color:#fff;
+    text-decoration:none;
+    font-size:18px;
+    font-weight:bold;
+    border-radius:50px;
+    letter-spacing:1px;
+    transition:all .3s ease;
+    box-shadow:0 0 20px rgba(255,0,0,.6);
+}
+
+#youtube-channel a:hover{
+    transform:translateY(-5px) scale(1.05);
+    box-shadow:0 0 35px rgba(255,0,0,.9);
+}
+
+#youtube-channel a:active{
+    transform:scale(.95);
+}
