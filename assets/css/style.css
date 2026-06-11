@@ -764,67 +764,68 @@ body::before {
 }
 
 #featured-video{
+    padding:60px 20px;
+    background:#0d0d0d;
     text-align:center;
-    padding:50px 20px;
-    background:#111;
-    color:white;
+}
+
+#featured-video h2{
+    color:#fff;
+    margin-bottom:25px;
+    font-size:32px;
 }
 
 .video-container{
-    max-width:1280px;
+    width:100%;
+    max-width:1100px;
     margin:auto;
-    position:relative;
+    overflow:hidden;
+    border-radius:20px;
+    border:2px solid #222;
+    box-shadow:
+        0 0 20px rgba(255,0,0,.3),
+        0 0 60px rgba(255,0,0,.15);
 }
 
 .video-container iframe{
     width:100%;
     aspect-ratio:16/9;
     border:none;
-    border-radius:15px;
-    box-shadow:0 0 25px rgba(255,0,0,0.4);
-    transition:0.4s ease;
-}
-
-.video-container iframe:hover{
-    transform:scale(1.01);
-    box-shadow:0 0 40px rgba(255,0,0,0.8);
+    display:block;
 }
 
 #youtube-channel{
     text-align:center;
-    padding:50px 20px;
-    background:#111;
-    color:white;
+    padding:60px 20px;
+    background:#0d0d0d;
+    color:#fff;
 }
 
 #youtube-channel h2{
-    margin-bottom:10px;
+    font-size:30px;
+    margin-bottom:15px;
 }
 
 #youtube-channel p{
-    margin-bottom:20px;
-    color:#ccc;
+    color:#bdbdbd;
+    margin-bottom:30px;
+    font-size:17px;
 }
 
 #youtube-channel a{
     display:inline-block;
-    padding:15px 35px;
-    background:linear-gradient(45deg,#ff0000,#ff3333);
+    padding:16px 40px;
+    background:#ff0000;
     color:#fff;
     text-decoration:none;
     font-size:18px;
-    font-weight:bold;
-    border-radius:50px;
-    letter-spacing:1px;
-    transition:all .3s ease;
-    box-shadow:0 0 20px rgba(255,0,0,.6);
+    font-weight:700;
+    border-radius:10px;
+    transition:.3s;
+    box-shadow:0 0 25px rgba(255,0,0,.5);
 }
 
 #youtube-channel a:hover{
-    transform:translateY(-5px) scale(1.05);
-    box-shadow:0 0 35px rgba(255,0,0,.9);
-}
-
-#youtube-channel a:active{
-    transform:scale(.95);
+    transform:translateY(-3px);
+    box-shadow:0 0 40px rgba(255,0,0,.9);
 }
