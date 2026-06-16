@@ -268,3 +268,32 @@ function joinSubmit(){
   // OPEN WHATSAPP GROUP
   window.open(whatsappLink, "https://chat.whatsapp.com/GlWp1JeOFc3IOd0bMAiX0S");
 }
+
+const slides = document.querySelectorAll(".slide");
+let current = 0;
+
+function showSlide(index) {
+    slides.forEach((slide) => {
+        slide.classList.remove("active");
+    });
+
+    slides[index].classList.add("active");
+}
+
+function nextSlide() {
+    current = (current + 1) % slides.length;
+    showSlide(current);
+}
+
+function prevSlide() {
+    current = (current - 1 + slides.length) % slides.length;
+    showSlide(current);
+}
+
+document.querySelector(".next").onclick = nextSlide;
+document.querySelector(".prev").onclick = prevSlide;
+
+// 5 second auto slide
+setInterval(nextSlide, 5000);
+
+showSlide(current);
