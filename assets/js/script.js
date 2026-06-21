@@ -309,3 +309,133 @@ fetch("components/footer.html")
 .then(data => {
 document.getElementById("footer").innerHTML = data;
 });
+
+const quotes = [
+
+"Security is not a product, but a process.",
+
+"Think before you click.",
+
+"Hackers don't break systems, they expose weaknesses.",
+
+"Privacy is power.",
+
+"The quieter you become, the more you can hear."
+
+];
+
+let quoteIndex = 0;
+
+function rotateQuotes(){
+
+document.getElementById("quoteText").innerText =
+quotes[quoteIndex];
+
+quoteIndex++;
+
+if(quoteIndex >= quotes.length){
+quoteIndex = 0;
+}
+
+}
+
+rotateQuotes();
+
+setInterval(rotateQuotes,5000);
+
+const words = [
+"HACKER WORLD",
+"ETHICAL HACKING",
+"CYBER SECURITY",
+"BUG BOUNTY"
+];
+
+let wordIndex = 0;
+let charIndex = 0;
+
+function typeHero(){
+
+const element =
+document.getElementById("heroTyping");
+
+if(charIndex < words[wordIndex].length){
+
+element.innerHTML +=
+words[wordIndex].charAt(charIndex);
+
+charIndex++;
+
+setTimeout(typeHero,100);
+
+}else{
+
+setTimeout(() => {
+
+element.innerHTML = "";
+
+charIndex = 0;
+
+wordIndex++;
+
+if(wordIndex >= words.length){
+wordIndex = 0;
+}
+
+typeHero();
+
+},2000);
+
+}
+
+}
+
+typeHero();
+
+const counters = document.querySelectorAll('.counter');
+
+counters.forEach(counter => {
+
+let target = +counter.getAttribute('data-target');
+let count = 0;
+
+const update = () => {
+
+const increment = target / 80;
+
+if(count < target){
+
+count += increment;
+counter.innerText = Math.ceil(count);
+
+requestAnimationFrame(update);
+
+}else{
+
+counter.innerText = target;
+
+}
+
+};
+
+update();
+
+});   
+
+const reveals = document.querySelectorAll(".reveal");
+
+window.addEventListener("scroll",()=>{
+
+reveals.forEach(item=>{
+
+const top = item.getBoundingClientRect().top;
+
+if(top < window.innerHeight - 100){
+
+item.classList.add("active");
+
+}
+
+});
+
+});
+
