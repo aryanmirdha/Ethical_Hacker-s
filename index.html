@@ -1,487 +1,351 @@
-    <!DOCTYPE html>
-    <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
-    <head>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Hacker Journey</title>
+    <title>Hacker Journey | Learn Ethical Hacking &amp; Cybersecurity</title>
+    <meta name="description" content="Free, hands-on cybersecurity education: ethical hacking, web security, bug bounty, Linux and networking, with practice labs and simulators.">
+    <meta name="theme-color" content="#07080c">
 
-    <meta name="description"
-    content="Learn Ethical Hacking, Cybersecurity, Web Exploitation and Practical Security Skills.">
+    <!-- Social preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Hacker Journey | Learn Ethical Hacking &amp; Cybersecurity">
+    <meta property="og:description" content="Free, hands-on cybersecurity education with practice labs and simulators.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     <link rel="stylesheet" href="assets/css/style.css">
+</head>
 
-    </head>
+<body>
 
-    <body>
-    <!-- NAVBAR -->
-
+    <!-- NAVBAR (loaded by script.js) -->
     <div id="navbar"></div>
 
-    <!-- HERO SECTION -->
+    <main>
 
-    <section class="hero">
+        <!-- HERO -->
+        <section class="hero">
 
-    <!-- LEFT CONTENT -->
+            <div class="hero-content">
+                <span class="eyebrow">Ethical Hacking &amp; Cybersecurity Education</span>
 
-    <div class="hero-content">
+                <h1>WELCOME TO <span id="heroTyping"></span></h1>
 
-    <h1>
-    WELCOME TO <span id="heroTyping"></span>
-    </h1>
+                <p>
+                    Learn cybersecurity from the ground up: Linux, networking, web exploitation
+                    and red teaming, with hands-on practice and a clear learning path from beginner to advanced.
+                </p>
 
-    <p>
-    Learn Cybersecurity, Ethical Hacking, Web Exploitation,
-    Red Teaming and Practical Security Skills From Zero To Advanced.
-    </p>
+                <div class="hero-actions">
+                    <a href="courses.html" class="btn">Start Learning</a>
+                    <a href="labs.html" class="btn btn-outline">Explore Labs</a>
+                </div>
+            </div>
 
-    <a href="courses.html" class="btn">
-    START LEARNING
-    </a>
+            <div class="hero-image">
+                <img src="assets/images/profile.jpg" alt="Profile photo">
+            </div>
 
-    </div>
+        </section>
 
-    <!-- RIGHT IMAGE -->
+        <!-- TOOLS WE COVER -->
+        <section class="trusted-section" aria-label="Tools and platforms covered">
 
-    <div class="hero-image">
+            <div class="trusted-text">Tools &amp; Platforms We Cover</div>
 
-    <img src="assets/images/profile.jpg" alt="Profile Image">
+            <div class="trusted-slider">
+                <div class="trusted-track">
 
-    </div>
+                    <img src="https://cdn.simpleicons.org/kalilinux" alt="Kali Linux">
+                    <img src="https://cdn.simpleicons.org/nmap" alt="Nmap">
+                    <img src="https://cdn.simpleicons.org/wireshark" alt="Wireshark">
+                    <img src="https://cdn.simpleicons.org/burpsuite" alt="Burp Suite">
+                    <img src="https://cdn.simpleicons.org/metasploit" alt="Metasploit">
+                    <img src="https://cdn.simpleicons.org/owasp" alt="OWASP">
+                    <img src="https://cdn.simpleicons.org/hackthebox" alt="Hack The Box">
+                    <img src="https://cdn.simpleicons.org/tryhackme" alt="TryHackMe">
+                    <img src="https://cdn.simpleicons.org/parrotsecurity" alt="Parrot OS">
+                    <img src="assets/images/nessus.png" alt="Nessus">
 
+                    <!-- Duplicate (identical) for infinite scroll -->
+                    <img src="https://cdn.simpleicons.org/kalilinux" alt="" aria-hidden="true">
+                    <img src="https://cdn.simpleicons.org/nmap" alt="" aria-hidden="true">
+                    <img src="https://cdn.simpleicons.org/wireshark" alt="" aria-hidden="true">
+                    <img src="https://cdn.simpleicons.org/burpsuite" alt="" aria-hidden="true">
+                    <img src="https://cdn.simpleicons.org/metasploit" alt="" aria-hidden="true">
+                    <img src="https://cdn.simpleicons.org/owasp" alt="" aria-hidden="true">
+                    <img src="https://cdn.simpleicons.org/hackthebox" alt="" aria-hidden="true">
+                    <img src="https://cdn.simpleicons.org/tryhackme" alt="" aria-hidden="true">
+                    <img src="https://cdn.simpleicons.org/parrotsecurity" alt="" aria-hidden="true">
+                    <img src="assets/images/nessus.png" alt="" aria-hidden="true">
 
-    <section class="trusted-section">
+                </div>
+            </div>
 
-        <div class="trusted-text">
-            Trusted Learning Resources & Tools
-        </div>
+        </section>
 
-        <div class="trusted-slider">
+        <!-- STATS -->
+        <section class="stats" aria-label="Platform overview">
 
-            <div class="trusted-track">
+            <div class="stat-box">
+                <h3 class="counter" data-target="12">0</h3>
+                <p>Courses</p>
+            </div>
 
-                <img src="https://cdn.simpleicons.org/kalilinux" alt="Kali Linux">
-                <img src="https://cdn.simpleicons.org/nmap" alt="Nmap">
-                <img src="https://cdn.simpleicons.org/wireshark" alt="Wireshark">
-                <img src="https://cdn.simpleicons.org/burpsuite" alt="Burp Suite">
-                <img src="https://cdn.simpleicons.org/metasploit" alt="Metasploit">
-                <img src="https://cdn.simpleicons.org/owasp" alt="OWASP">
-                <img src="https://cdn.simpleicons.org/hackthebox" alt="Hack The Box">
-                <img src="https://cdn.simpleicons.org/tryhackme" alt="TryHackMe">
-                <img src="https://cdn.simpleicons.org/parrotsecurity" alt="Parrot OS">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZOwOz5rKzVTTC1zNHoLkgQkO7_2Bsn9C252MGgRlW3w&s=10" alt="Nessus">
+            <div class="stat-box">
+                <h3 class="counter" data-target="5">0</h3>
+                <p>Labs</p>
+            </div>
 
-                <!-- Duplicate for Infinite Scroll -->
+            <div class="stat-box">
+                <h3 class="counter" data-target="10">0</h3>
+                <p>Tools</p>
+            </div>
 
-                <img src="https://cdn.simpleicons.org/kalilinux" alt="Kali Linux">
-                <img src="https://nmap.org/images/sitelogo.png" alt="Nmap">
-                <img src="https://cdn.simpleicons.org/wireshark" alt="Wireshark">
-                <img src="https://cdn.simpleicons.org/burpsuite" alt="Burp Suite">
-                <img src="https://cdn.simpleicons.org/metasploit" alt="Metasploit">
-                <img src="https://cdn.simpleicons.org/owasp" alt="OWASP">
-                <img src="https://cdn.simpleicons.org/hackthebox" alt="Hack The Box">
-                <img src="https://cdn.simpleicons.org/tryhackme" alt="TryHackMe">
-                <img src="https://cdn.simpleicons.org/parrotsecurity" alt="Parrot OS">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZOwOz5rKzVTTC1zNHoLkgQkO7_2Bsn9C252MGgRlW3w&s=10" alt="Nessus">
+            <div class="stat-box">
+                <h3>100%</h3>
+                <p>Free</p>
+            </div>
+
+        </section>
+
+        <!-- WHAT WE OFFER -->
+        <section class="info-section">
+
+            <h2>WHAT WE <span class="accent">OFFER</span></h2>
+
+            <p>
+                Everything you need to start and grow in cybersecurity, in one place.
+                No paywalls, no filler theory.
+            </p>
+
+            <div class="cards">
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-graduation-cap"></i> Courses</h3>
+                    <p>
+                        Step-by-step cybersecurity and ethical hacking training
+                        for beginners and advanced learners.
+                    </p>
+                    <a href="courses.html" class="btn">Explore →</a>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-screwdriver-wrench"></i> Hacker Tools</h3>
+                    <p>
+                        Official download links for Kali Linux, Burp Suite, Wireshark,
+                        VirtualBox, VMware and other essential security tools.
+                    </p>
+                    <a href="tools.html" class="btn">Open Tools →</a>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-flask"></i> Labs</h3>
+                    <p>
+                        Hands-on challenges to build real-world penetration testing skills.
+                    </p>
+                    <a href="labs.html" class="btn">Start Lab →</a>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-book"></i> Free E-books</h3>
+                    <p>
+                        Free cybersecurity guides and learning materials to study at your own pace.
+                    </p>
+                    <a href="ebooks.html" class="btn">Download →</a>
+                </div>
 
             </div>
 
-        </div>
+        </section>
 
-    </section>
+        <!-- TERMINAL -->
+        <section class="terminal" aria-label="Terminal animation">
 
-    </section>
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
 
-    <section class="stats">
+            <div class="terminal-body">
+                <p id="typing-text"></p>
+            </div>
 
-    <div class="stat-box">
-    <h3 class="counter" data-target="12">0</h3>
-    <p>Courses</p>
-    </div>
+        </section>
 
-    <div class="stat-box">
-    <h3 class="counter" data-target="5">0</h3>
-    <p>Labs</p>
-    </div>
+        <!-- PRACTICE LABS -->
+        <section class="info-section">
 
-    <div class="stat-box">
-    <h3 class="counter" data-target="10">0</h3>
-    <p>Tools</p>
-    </div>
-
-    <div class="stat-box">
-    <h3>100%</h3>
-    <p>Free</p>
-    </div>
-
-    </section>
-
-    <!-- FEATURE CARDS -->
-
-    <section class="cards">
-
-        <div class="card">
-
-            <h3>📚 Courses</h3>
+            <h2>INTERACTIVE <span class="accent">PRACTICE LABS</span></h2>
 
             <p>
-                Step-by-step Cybersecurity and Ethical Hacking training
-                designed for beginners and advanced learners.
+                Cybersecurity is a practical field. Reading theory alone is not enough, so practice
+                in safe, simulated environments to understand vulnerabilities, misconfigurations
+                and attack techniques the way they appear in real systems.
             </p>
 
-            <a href="courses.html" class="btn">
-                Explore →
-            </a>
+            <div class="cards">
 
-        </div>
+                <div class="card">
+                    <h3><i class="fa-solid fa-terminal"></i> Practice Terminal</h3>
+                    <p>
+                        Practice Linux and Kali commands in a simulated terminal.
+                        Completely safe and free.
+                    </p>
+                    <a href="terminal.html" class="btn">Open Terminal →</a>
+                </div>
 
-        <div class="card">
+                <div class="card">
+                    <h3><i class="fa-solid fa-network-wired"></i> Wireshark Demo</h3>
+                    <p>
+                        A packet capture simulator that shows how network traffic
+                        is captured and analysed.
+                    </p>
+                    <a href="wireshark.html" class="btn">Open Demo →</a>
+                </div>
 
-            <h3>🛠️ Hacker Tools</h3>
+                <div class="card">
+                    <h3><i class="fa-solid fa-database"></i> SQLi Lab</h3>
+                    <p>
+                        Test SQL injection payloads safely in a fake pentest environment.
+                    </p>
+                    <a href="terminal-sqli.html" class="btn">Open SQLi Lab →</a>
+                </div>
 
-            <p>
-                Download and access essential cybersecurity tools like
-                Kali Linux, Burp Suite, Wireshark, Nmap, VirtualBox,
-                VMware and other ethical hacking resources.
+            </div>
+
+            <p class="note">
+                All labs are simulated and meant for legal, authorized learning only.
+                Never test systems you do not own or have written permission to test.
             </p>
 
-            <a href="tools.html" class="btn">
-                Open Tools →
-            </a>
+        </section>
 
-        </div>
+        <!-- LEARNING PATH -->
+        <section class="roadmap">
 
-        <div class="card">
+            <h2>YOUR <span class="accent">LEARNING PATH</span></h2>
 
-            <h3>🧪 Labs</h3>
+            <div class="roadmap-step"><strong>Beginner</strong> · Linux, Networking &amp; Security Basics</div>
+            <div class="roadmap-step"><strong>Intermediate</strong> · Web Security, SQL Injection &amp; Vulnerability Testing</div>
+            <div class="roadmap-step"><strong>Advanced</strong> · Bug Bounty, Exploitation &amp; Privilege Escalation</div>
+            <div class="roadmap-step"><strong>Expert</strong> · Red Team Operations &amp; Real-World Machines</div>
 
-            <p>
-                Practice hands-on hacking challenges and improve your
-                real-world penetration testing skills.
-            </p>
+        </section>
 
-            <a href="labs.html" class="btn">
-                Start Lab →
-            </a>
+        <!-- COURSE TOPICS -->
+        <section class="info-section">
 
-        </div>
+            <h2>COURSE <span class="accent">TOPICS</span></h2>
 
-        <div class="card">
+            <ul class="info-list">
+                <li><a href="linux.html">Linux Fundamentals For Hackers</a></li>
+                <li><a href="networking.html">Networking &amp; Cybersecurity Basics</a></li>
+                <li><a href="webhacking.html">Web Application Hacking</a></li>
+                <li><a href="bugbounty.html">Bug Bounty Fundamentals</a></li>
+                <li><a href="privesc.html">Privilege Escalation Techniques</a></li>
+                <li><a href="labslearning.html">Real-World Cybersecurity Labs</a></li>
+                <li><a href="redteam.html">Red Teaming &amp; Exploitation</a></li>
+            </ul>
 
-            <h3>📖 Free E-books</h3>
+        </section>
 
-            <p>
-                Download free cybersecurity resources,
-                guides and learning materials.
-            </p>
+        <!-- GITHUB STATS -->
+        <section class="github-section">
 
-            <a href="ebooks.html" class="btn">
-                Download →
-            </a>
+            <h2>GITHUB <span class="accent">ACTIVITY</span></h2>
 
-        </div>
+            <div class="github-grid">
 
-    </section>
+                <div class="github-card">
+                    <h3>Repositories</h3>
+                    <span>12+</span>
+                </div>
 
-    </section>
-    <section class="cards">
+                <div class="github-card">
+                    <h3>Projects</h3>
+                    <span>20+</span>
+                </div>
 
-    <div class="card">
-    <h3>🧪 Hands-On Labs</h3>
-    <p>Practice real-world cybersecurity scenarios.</p>
-    </div>
+                <div class="github-card">
+                    <h3>Learning</h3>
+                    <span>Daily</span>
+                </div>
 
-    <div class="card">
-    <h3>🚀 Beginner Friendly</h3>
-    <p>Learn ethical hacking from absolute zero.</p>
-    </div>
+            </div>
 
-    <div class="card">
-    <h3>🎯 Practical Learning</h3>
-    <p>No boring theory, only useful real-world skills.</p>
-    </div>
+        </section>
 
-    </section>
+        <!-- QUOTE -->
+        <section class="quote-section">
 
-    <!-- TERMINAL -->
+            <h2>CYBERSECURITY <span class="accent">QUOTE</span></h2>
 
-    <section class="terminal">
+            <div class="quote-box">
+                <p id="quoteText"></p>
+            </div>
 
-    <div class="terminal-header">
+        </section>
 
-    <div class="terminal-dots">
+        <!-- CERTIFICATIONS -->
+        <section class="certificate-section">
 
-    <span></span>
-    <span></span>
-    <span></span>
+            <h2>CERTI<span class="accent">FICATIONS</span></h2>
 
-    </div>
+            <div class="slider-container">
 
-    </div>
+                <button class="nav prev" aria-label="Previous certificate">&#10094;</button>
 
-    <div class="terminal-body">
+                <div class="slider">
+                    <img src="assets/images/certificates/cert1.png" class="slide active" alt="Certificate 1">
+                    <img src="assets/images/certificates/cert2.png" class="slide" alt="Certificate 2">
+                    <img src="assets/images/certificates/cert3.png" class="slide" alt="Certificate 3">
+                    <img src="assets/images/certificates/cert4.png" class="slide" alt="Certificate 4">
+                    <img src="assets/images/certificates/cert5.png" class="slide" alt="Certificate 5">
+                    <img src="assets/images/certificates/cert6.png" class="slide" alt="Certificate 6">
+                    <img src="assets/images/certificates/cert7.png" class="slide" alt="Certificate 7">
+                </div>
 
-    <p id="typing-text"></p>
+                <button class="nav next" aria-label="Next certificate">&#10095;</button>
 
-    </div>
+            </div>
 
-    </section>
+        </section>
 
-    <section class="roadmap">
+        <!-- CONNECT -->
+        <section class="connect-section">
 
-    <h2>CYBERSECURITY ROADMAP</h2>
+            <h2 class="section-title">CONNECT <span class="accent">WITH ME</span></h2>
 
-    <div class="roadmap-step">1️⃣ Linux Fundamentals</div>
-    <div class="roadmap-step">2️⃣ Networking Basics</div>
-    <div class="roadmap-step">3️⃣ Web Security</div>
-    <div class="roadmap-step">4️⃣ SQL Injection</div>
-    <div class="roadmap-step">5️⃣ Bug Bounty</div>
-    <div class="roadmap-step">6️⃣ Red Teaming</div>
-    <div class="roadmap-step">7️⃣ Advanced Exploitation</div>
+            <div class="connect-grid">
 
-    </section>
+                <a href="https://github.com/aryanmirdha"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="connect-card">
 
-    <!-- GITHUB STATS -->
+                    <i class="fab fa-github"></i>
+                    <h3>GitHub</h3>
+                    <p>View my projects and repositories.</p>
 
-    <section class="github-section">
+                </a>
 
-    <h2>GITHUB STATS</h2>
+            </div>
 
-    <div class="github-grid">
+        </section>
 
-    <div class="github-card">
-    <h3>Repositories</h3>
-    <span>12+</span>
-    </div>
+    </main>
 
-    <div class="github-card">
-    <h3>Projects</h3>
-    <span>20+</span>
-    </div>
-
-    <div class="github-card">
-    <h3>Learning</h3>
-    <span>Daily</span>
-    </div>
-
-    </div>
-
-    </section>
-
-    <!-- CYBER QUOTES -->
-
-    <section class="quote-section">
-
-    <h2>CYBERSECURITY QUOTE</h2>
-
-    <div class="quote-box">
-    <p id="quoteText"></p>
-    </div>
-
-    </section>
-
-    <!-- INFO SECTION -->
-
-    <section class="info-section">
-
-    <h2>
-    START YOUR CYBERSECURITY JOURNEY
-    </h2>
-
-    <p>
-    Cybersecurity is one of the fastest-growing industries in the world.
-    Organizations need skilled professionals who can secure systems,
-    applications and networks from modern cyber threats.
-    </p>
-
-    <p>
-    This platform is designed to help beginners learn Ethical Hacking
-    step-by-step with practical guidance and real-world examples.
-    </p>
-
-    </section>
-
-    <!-- LEARNING SECTION -->
-
-    <section class="info-section">
-
-    <h2>
-    WHAT YOU WILL LEARN
-    </h2>
-
-    <ul class="info-list">
-
-    <li>
-    <a href="linux.html">
-    Linux Fundamentals For Hackers
-    </a>
-    </li>
-
-    <li>
-    <a href="networking.html">
-    Networking & Cybersecurity Basics
-    </a>
-    </li>
-
-    <li>
-    <a href="webhacking.html">
-    Web Application Hacking
-    </a>
-    </li>
-
-    <li>
-    <a href="bugbounty.html">
-    Bug Bounty Fundamentals
-    </a>
-    </li>
-
-    <li>
-    <a href="privesc.html">
-    Privilege Escalation Techniques
-    </a>
-    </li>
-
-    <li>
-    <a href="labslearning.html">
-    Real-World Cybersecurity Labs
-    </a>
-    </li>
-
-    <li>
-    <a href="redteam.html">
-    Red Teaming & Exploitation
-    </a>
-    </li>
-
-    </ul>
-
-    </section>
-
-    <!-- LABS SECTION -->
-
-    <section class="info-section">
-
-    <h2>
-    WHY PRACTICAL LABS MATTER
-    </h2>
-
-    <p>
-    Cybersecurity is a practical field.
-    Reading theory alone is not enough to become skilled.
-    Practical labs help you understand vulnerabilities,
-    misconfigurations and exploitation techniques in real systems.
-    </p>
-
-    <p>
-    The more environments you practice in,
-    the stronger your problem-solving and hacking skills become.
-    </p>
-
-    </section>
-
-    <!-- ROADMAP -->
-
-    <section class="info-section">
-
-    <h2>
-    STUDENT LEARNING ROADMAP
-    </h2>
-
-    <ul class="info-list">
-
-    <li>
-    Beginner → Linux, Networking & Security Basics
-    </li>
-
-    <li>
-    Intermediate → Web Hacking & Vulnerability Testing
-    </li>
-
-    <li>
-    Advanced → Exploitation & Privilege Escalation
-    </li>
-
-    <li>
-    Expert → Red Team Operations & Real Machines
-    </li>
-
-    </ul>
-
-    </section>
-
-    <section class="info-section">
-
-    <div class="card">
-    <h2>
-    HACKER <span style="color:#ff1a1a">TOOLS</span>
-    </h2>
-
-    <p>
-    Download Kali Linux, VMware, VirtualBox, Burp Suite,
-    Wireshark and other tools used by Ethical Hackers.
-    </p>
-
-    <a href="tools.html" class="btn">
-    Open Tools →
-    </a>
-
-    </div>
-    </section>
-
-
-
-    <!-- PRACTICE TERMINAL SECTION -->
-
-    <section class="info-section">
-
-    <h2>
-    PRACTICE <span style="color:#ff1a1a">TERMINAL</span>
-    </h2>
-
-    <p>
-    Hacker World ka interactive terminal try karo.
-    Simulated Kali Linux environment mein commands practice karo — bilkul safe, bilkul free.
-    </p>
-
-    <a href="terminal.html" class="btn">
-    Open Terminal →
-    </a>
-
-
-    <section class="info-section">
-    <h2>WIRESHARK <span style="color:#ff1a1a">DEMO</span></h2>
-    <p>Live network packet capture simulator — Wireshark kaise kaam karta hai seekho.</p>
-    <a href="wireshark.html" class="btn">Open Demo →</a>
-    </section>
-
-    <!-- SQLi TERMINAL SECTION -->
-
-    <section class="info-section">
-
-    <h2>
-    SQLi <span style="color:#ff1a1a">TERMINAL</span>
-    </h2>
-
-    <p>
-    SQL Injection simulator practice karo.
-    Fake pentest environment mein payloads test karo safely.
-    </p>
-
-    <a href="terminal-sqli.html" class="btn">
-    Open SQLi Lab →
-    </a>
-
-    </section>
+    <!-- FOOTER (loaded by script.js) -->
+    <div id="footer"></div>
 
     <!-- DRAGGABLE JOIN BUTTON -->
     <div id="joinBtn">JOIN</div>
@@ -489,124 +353,39 @@
     <!-- POPUP FORM -->
     <div id="joinForm">
 
-    <h3>Join Hacker World</h3>
+        <h3>Join Hacker Journey</h3>
 
-    <input type="text" placeholder="Name" id="name">
-    <input type="tel" placeholder="Phone Number" id="phone">
-    <input type="text" placeholder="Address" id="address">
+        <input type="text" placeholder="Name" id="name" autocomplete="name">
+        <input type="tel" placeholder="Phone Number" id="phone" autocomplete="tel">
+        <input type="text" placeholder="Address (optional)" id="address" autocomplete="street-address">
 
-    <select id="interest">
-        <option value="">What do you want to learn?</option>
-        <option>Ethical Hacking</option>
-        <option>Web Hacking</option>
-        <option>Bug Bounty</option>
-        <option>Linux & Networking</option>
-        <option>Red Teaming</option>
-    </select>
+        <select id="interest">
+            <option value="">What do you want to learn?</option>
+            <option>Ethical Hacking</option>
+            <option>Web Hacking</option>
+            <option>Bug Bounty</option>
+            <option>Linux &amp; Networking</option>
+            <option>Red Teaming</option>
+        </select>
 
-    <button onclick="joinSubmit()">Submit</button>
+        <button type="button" onclick="joinSubmit()">Submit</button>
 
     </div>
 
-    <a 
-    href="https://wa.me/917001267393?text=Hello%20I%20want%20to%20join%20your%20course"
-    class="whatsapp-btn"
-    target="_blank"
-    >
-    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" width="35">
+    <!-- WHATSAPP BUTTON -->
+    <a href="https://wa.me/917001267393?text=Hello%20I%20want%20to%20join%20your%20course"
+       class="whatsapp-btn"
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="Chat on WhatsApp">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" width="35" alt="WhatsApp">
     </a>
 
-    <!-- CERTIFICATIONS SECTION -->
-
-    <section class="certificate-section">
-
-        <h2>CERTIFICATIONS</h2>
-
-        <div class="slider-container">
-
-            <button class="nav prev">&#10094;</button>
-
-    <div class="slider">
-
-        <img src="assets/images/certificates/cert1.png" class="slide active" alt="Certificate 1">
-
-        <img src="assets/images/certificates/cert2.png" class="slide" alt="Certificate 2">
-
-        <img src="assets/images/certificates/cert3.png" class="slide" alt="Certificate 3">
-
-        <img src="assets/images/certificates/cert4.png" class="slide" alt="Certificate 4">
-
-        <img src="assets/images/certificates/cert5.png" class="slide" alt="Certificate 5">
-
-        <img src="assets/images/certificates/cert6.png" class="slide" alt="Certificate 6">
-
-        <img src="assets/images/certificates/cert7.png" class="slide" alt="Certificate 7">
-
-    </div>
-
-            <button class="nav next">&#10095;</button>
-
-        </div>
-
-    <section class="info-section">
-
-        <section class="info-section">
-
-    <h2>STUDENT FEEDBACK</h2>
-
-    <div class="card">
-    <p>
-    "Best cybersecurity learning platform."
-    </p>
-    </div>
-
-    <div class="card">
-    <p>
-    "Simple and practical learning approach."
-    </p>
-    </div>
-
-    </section>
-
-    <!-- FOOTER -->
-    <section class="connect-section">
-
-    <h2 class="section-title">CONNECT WITH ME</h2>
-
-    <div class="connect-grid">
-
-    <a href="https://github.com/aryanmirdha"
-    target="_blank"
-    class="connect-card">
-
-    <i class="fab fa-github"></i>
-
-    <h3>GitHub</h3>
-
-    <p>
-    View my projects and repositories.
-    </p>
-
-    </a>
-    
-    </section>
-
-    <div id="footer"></div>
-
-
-
-    <!-- DRAGON EFFECT -->
-
-    <canvas id="dragon"></canvas>
-
-    <div class="spider">🕷️</div>
-    <div class="spider">🕷️</div>
-    <div class="spider">🕷️</div>
-    <div class="spider">🕷️</div>
+    <!-- BACKGROUND EFFECT (kept because script.js uses it) -->
+    <canvas id="dragon" aria-hidden="true"></canvas>
 
     <!-- JS -->
-
     <script src="assets/js/script.js"></script>
 
-    </body>
-    </html>
+</body>
+</html>
